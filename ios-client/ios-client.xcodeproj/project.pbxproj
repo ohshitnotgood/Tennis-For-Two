@@ -14,6 +14,7 @@
 		582A124429985C8B00931D26 /* ios_clientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582A124329985C8B00931D26 /* ios_clientTests.swift */; };
 		582A124E29985C8B00931D26 /* ios_clientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582A124D29985C8B00931D26 /* ios_clientUITests.swift */; };
 		582A125029985C8B00931D26 /* ios_clientUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582A124F29985C8B00931D26 /* ios_clientUITestsLaunchTests.swift */; };
+		583974D229985F170009121C /* MotionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583974D129985F170009121C /* MotionKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		582A124929985C8B00931D26 /* ios-clientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-clientUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		582A124D29985C8B00931D26 /* ios_clientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_clientUITests.swift; sourceTree = "<group>"; };
 		582A124F29985C8B00931D26 /* ios_clientUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_clientUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		583974D129985F170009121C /* MotionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				582A123429985C8A00931D26 /* ContentView.swift */,
 				582A123629985C8B00931D26 /* Assets.xcassets */,
 				582A123829985C8B00931D26 /* Preview Content */,
+				583974D129985F170009121C /* MotionKit.swift */,
 			);
 			path = "ios-client";
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 			files = (
 				582A123529985C8A00931D26 /* ContentView.swift in Sources */,
 				582A123329985C8A00931D26 /* ios_clientApp.swift in Sources */,
+				583974D229985F170009121C /* MotionKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
