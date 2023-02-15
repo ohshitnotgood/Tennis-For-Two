@@ -1,5 +1,6 @@
 package se.kth.is1200.android_client
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.*
 import androidx.appcompat.app.AppCompatActivity
@@ -7,12 +8,14 @@ import android.os.Bundle
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
+    var accXPC = 0
+    var accYPC = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         publishAccelerometerData()
-        publishCoordinateData()
         publishGyroscopeData()
     }
 
@@ -30,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
                 val accZTV: TextView = findViewById(R.id.acc_d_z)
                 accZTV.text = p0.values[2].toString()
+
+                publishCoordinateData(p0.values[0], p0.values[1])
             }
 
             override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
@@ -39,16 +44,41 @@ class MainActivity : AppCompatActivity() {
         sensorManager.registerListener(sensorEventListener, sensor, 1)
     }
 
-    private fun publishCoordinateData() {
+    @SuppressLint("SetTextI18n")
+    private fun publishCoordinateData(accX: Float, accY: Float) {
+        
+        accXPC = (accX * 10).toInt()
+        accYPC = (accY * 10).toInt()
 
+        val xpc: TextView = findViewById(R.id.xpc)
+        val ypx:TextView = findViewById(R.id.ypc)
+
+        xpc.text = "($accXPC"
+
+        ypx.text = ", $accYPC)"
     }
     private fun publishGyroscopeData() {
         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
 
         val gyroEventListener = object : SensorEventListener {
-            
+            override fun onSensorChanged(p0: SensorEvent?) {
+                val gyroXTV = findViewById<TextView>(R.id.gyro_x)
+                gyroXTV.text = p0!!.values[0].toString()
+
+                val gyroYTV = findViewById<TextView>(R.id.gyro_y)
+                gyroYTV.text = p0.values[1].toString()
+
+                val gyroZTV = findViewById<TextView>(R.id.gyro_z)
+                gyroZTV.text = p0.values[2].toString()
+            }
+
+            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+                print("Gyro accuracy change detected")
+            }
         }
+
+        sensorManager.registerListener(gyroEventListener, sensor, 1)
     }
 
 

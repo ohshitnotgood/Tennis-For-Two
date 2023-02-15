@@ -33,10 +33,21 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/xpc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/ypc"
+                android:paddingEnd="2dp"
+                android:fontFamily="monospace"
+                android:text="(0"
+                tools:ignore="HardcodedText,RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/ypc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="(0, 0)"
+                android:text=", 0)"
                 android:fontFamily="monospace"
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
@@ -139,6 +150,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/gyro_x"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -160,6 +172,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/gyro_y"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -181,6 +194,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
+                android:id="@+id/gyro_z"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
