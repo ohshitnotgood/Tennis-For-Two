@@ -65,6 +65,8 @@ struct ContentView: View {
                             .foregroundColor(.secondary)
                     }
                     
+                    DataDisplayView(text: "Connection Status", data: settings.connectionStatus)
+                    
                     HStack {
                         Text("IP Address")
                         Spacer()
@@ -85,56 +87,19 @@ struct ContentView: View {
 #if DEBUG
                 // MARK: Accelerometer Section
                 Section {
-                    HStack {
-                        Text("x")
-                        Spacer()
-                        Text("\(kit.accl_x)")
-                            .foregroundColor(.secondary)
-                    }
+                    DataDisplayView(text: "x", data: "\(kit.accl_x)")
                     
-                    HStack {
-                        Text("y")
-                        Spacer()
-                        Text("\(kit.accl_y)")
-                            .foregroundColor(.secondary)
-                    }
+                    DataDisplayView(text: "y", data: "\(kit.accl_y)")
                     
-                    HStack {
-                        Text("z")
-                        Spacer()
-                        Text("\(kit.accl_z)")
-                            .foregroundColor(.secondary)
-                    }
+                    DataDisplayView(text: "z", data: "\(kit.accl_z)")
+                    
+                    DataDisplayView(text: "Max Positive Acceleration Data", data: String(kit.maxNegativeXAccelerationDetected))
+                    
+                    DataDisplayView(text: "Max Negative Acceleration Data", data: String(kit.maxNegativeXAccelerationDetected))
+                    
                 } header: {
                     Text("Accelerometer Data")
                 }
-                
-                // MARK: Gyro Section
-                Section {
-                    HStack {
-                        Text("x")
-                        Spacer()
-                        Text("\(kit.tilt_x)")
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    HStack {
-                        Text("y")
-                        Spacer()
-                        Text("\(kit.tilt_y)")
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    HStack {
-                        Text("z")
-                        Spacer()
-                        Text("\(kit.tilt_z)")
-                            .foregroundColor(.secondary)
-                    }
-                } header: {
-                    Text("Gyro Data")
-                }
-                
 #endif
                 
                 // MARK: Network Section
@@ -155,14 +120,6 @@ struct ContentView: View {
             })
             .sheet(isPresented: $showCreditsSheet, content: {
                 CreditsView()
-            })
-            .alert("Adjust refresh rate", isPresented: $showRefreshRateAlert, actions: {
-                Slider(
-                    value: $settings.sensorDataRefreshRate,
-                    in: 1...100
-                )
-            }, message: {
-                Text("Slide to adjust the sensor refresh rate")
             })
             .alert("Connect to the chip kit", isPresented: $showConnectToBoardAlert, actions: {
                 TextField("URL", text: $settings.boardIPAddress)
@@ -198,6 +155,26 @@ struct ContentView: View {
     }
 }
 
+
+struct DataDisplayView: View {
+    let text: String
+    @State var data: String
+    
+    @State private var displayAsMonospaced = true
+    
+    var body: some View {
+        HStack {
+            Text(text)
+            Spacer()
+            Text(data)
+                .monospaced(displayAsMonospaced)
+                .foregroundColor(.secondary)
+        }.onAppear {
+            let data: Double? = Double(data)
+            displayAsMonospaced = data != nil
+        }
+    }
+}
 
 // MARK: Previews
 @available(*, unavailable)

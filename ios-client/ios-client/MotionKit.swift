@@ -39,6 +39,8 @@ class MotionKit: ObservableObject {
     
     @Published var speed    = 0
     
+    @Published var maxPositiveXAccelerationDetected = 0.0
+    @Published var maxNegativeXAccelerationDetected = 0.0
     
     private var queue       = OperationQueue()
     private var manager     = CMMotionManager()
