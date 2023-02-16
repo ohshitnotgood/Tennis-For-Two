@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LabeledStepper
 
 /// Main entry point view of the app.
 struct ContentView: View {
@@ -15,6 +16,7 @@ struct ContentView: View {
     @State private var showConnectToBoardAlert      = false
     @State private var showRefreshRateAlert         = false
     @State private var showFeatureNotImplemented    = false
+    @State private var hasConnectionBeenEstablished = false
     
     @State private var boardIPAddress               = ""
     
@@ -36,6 +38,7 @@ struct ContentView: View {
                     Text("Coordinates")
                 }
                 
+                // MARK: Config section
                 Section {
                     HStack {
                         Text("Sensor refresh rate")
@@ -78,32 +81,8 @@ struct ContentView: View {
                     Text("Configurations")
                 }
                 
-                #if DEBUG
-//                Section {
-//                    HStack {
-//                        Text("Pitch (x)")
-//                        Spacer()
-//                        Text("\(kit.latestCoordinate.pitch)")
-//                            .foregroundColor(.secondary)
-//                    }
-//
-//                    HStack {
-//                        Text("Roll (y)")
-//                        Spacer()
-//                        Text("\(kit.latestCoordinate.roll)")
-//                            .foregroundColor(.secondary)
-//                    }
-//
-//                    HStack {
-//                        Text("Yaw (z)")
-//                        Spacer()
-//                        Text("\(kit.latestCoordinate.yaw)")
-//                            .foregroundColor(.secondary)
-//                    }
-//                } header: {
-//                    Text("Attitude Data")
-//                }
-                
+#if DEBUG
+                // MARK: Accelerometer Section
                 Section {
                     HStack {
                         Text("x")
@@ -129,6 +108,7 @@ struct ContentView: View {
                     Text("Accelerometer Data")
                 }
                 
+                // MARK: Gyro Section
                 Section {
                     HStack {
                         Text("x")
@@ -154,16 +134,16 @@ struct ContentView: View {
                     Text("Gyro Data")
                 }
                 
-                #endif
+#endif
                 
+                // MARK: Network Section
                 Section {
                     Button("Connect to the board") {
-//                        showConnectToBoardAlert.toggle()
                         showFeatureNotImplemented.toggle()
                     }
                     Button("View network log") {
-//                        showFeatureNotImplemented.toggle()
-                        kit.latestCoordinate.x = 89
+                        showFeatureNotImplemented.toggle()
+                        
                     }
                 } header: {
                     Text("Network")
@@ -263,6 +243,23 @@ class SettingsValueStore: ObservableObject {
     @Published var sensitivity = 6
 }
 
+struct SensitivitySliderView: View {
+    @State private var sensitivity = 0
+    var body: some View {
+        List {
+            Section {
+                HStack {
+                    Stepper("Sensitivity: \(sensitivity)", value: $sensitivity, in: 0...10)
+                }
+            } header: {
+                Text("Adjust Sensitivity")
+            }
+        }
+    }
+}
+
+
+// MARK: Previews
 @available(*, unavailable)
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -274,5 +271,13 @@ struct ContentView_Previews: PreviewProvider {
 struct CoordinatesListingView_Previews: PreviewProvider {
     static var previews: some View {
         CoordinatesListingView()
+    }
+}
+
+
+@available(*, unavailable)
+struct SensitivitySliderView_Previews: PreviewProvider {
+    static var previews: some View {
+        SensitivitySliderView()
     }
 }
