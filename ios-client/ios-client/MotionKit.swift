@@ -15,9 +15,6 @@ import CoreMotion
 /// game commands for the u32 system.
 class MotionKit: ObservableObject {
     
-    /// Contains `x` and `y` coordinate of the next position of the paddle on the OLED display.
-    @Published var latestCoordinate = MKCoordinate()
-    
     // MARK: Published variables
     @Published var accl_x   = 0.0
     @Published var accl_y   = 0.0
@@ -130,39 +127,4 @@ class MotionKit: ObservableObject {
         return calibratedCoordinate
     }
     
-}
-
-/// Encapsulates the x and y coordinate of the user's racquet while also ensuring that the coordinates do not go out of display bounds.
-class MKCoordinate {
-    var x: Double = 0.0 {
-        didSet {
-            
-        }
-    }
-    var y: Double = 0.0 {
-        didSet {
-            
-        }
-    }
-    
-    
-}
-
-class AccelerometerNotAvailableError: Error {
-    
-}
-
-
-class GyroNotAvailableError: Error {
-    
-}
-
-extension Double {
-    func signOf() -> Int {
-        return self > 0 ? 1 : -1
-    }
-    
-    func signOf() -> Double {
-        return self > 0 ? 1.0 : -1.0
-    }
 }

@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct ios_clientApp: App {
+    @ObservedObject private var settings = SettingsValueStore()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(settings)
         }
     }
 }

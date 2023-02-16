@@ -11,11 +11,12 @@
 		582A123529985C8A00931D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582A123429985C8A00931D26 /* ContentView.swift */; };
 		582A123729985C8B00931D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 582A123629985C8B00931D26 /* Assets.xcassets */; };
 		582A123A29985C8B00931D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 582A123929985C8B00931D26 /* Preview Assets.xcassets */; };
-		582A124429985C8B00931D26 /* ios_clientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582A124329985C8B00931D26 /* ios_clientTests.swift */; };
-		582A124E29985C8B00931D26 /* ios_clientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582A124D29985C8B00931D26 /* ios_clientUITests.swift */; };
-		582A125029985C8B00931D26 /* ios_clientUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582A124F29985C8B00931D26 /* ios_clientUITestsLaunchTests.swift */; };
 		583974D229985F170009121C /* MotionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583974D129985F170009121C /* MotionKit.swift */; };
 		585AFDA8299EB0BC0090FE46 /* LabeledStepper in Frameworks */ = {isa = PBXBuildFile; productRef = 585AFDA7299EB0BC0090FE46 /* LabeledStepper */; };
+		585AFDAA299EB47E0090FE46 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDA9299EB47E0090FE46 /* Extensions.swift */; };
+		585AFDAC299EB48D0090FE46 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAB299EB48D0090FE46 /* Errors.swift */; };
+		585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAD299EB5070090FE46 /* ChildrenViews.swift */; };
+		585AFDB0299EB5760090FE46 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAF299EB5760090FE46 /* Store.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,11 +43,12 @@
 		582A123629985C8B00931D26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		582A123929985C8B00931D26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		582A123F29985C8B00931D26 /* ios-clientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-clientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		582A124329985C8B00931D26 /* ios_clientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_clientTests.swift; sourceTree = "<group>"; };
 		582A124929985C8B00931D26 /* ios-clientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-clientUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		582A124D29985C8B00931D26 /* ios_clientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_clientUITests.swift; sourceTree = "<group>"; };
-		582A124F29985C8B00931D26 /* ios_clientUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_clientUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		583974D129985F170009121C /* MotionKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionKit.swift; sourceTree = "<group>"; };
+		585AFDA9299EB47E0090FE46 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		585AFDAB299EB48D0090FE46 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		585AFDAD299EB5070090FE46 /* ChildrenViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildrenViews.swift; sourceTree = "<group>"; };
+		585AFDAF299EB5760090FE46 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,8 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				582A123129985C8A00931D26 /* ios-client */,
-				582A124229985C8B00931D26 /* ios-clientTests */,
-				582A124C29985C8B00931D26 /* ios-clientUITests */,
 				582A123029985C8A00931D26 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +103,10 @@
 				582A123629985C8B00931D26 /* Assets.xcassets */,
 				582A123829985C8B00931D26 /* Preview Content */,
 				583974D129985F170009121C /* MotionKit.swift */,
+				585AFDA9299EB47E0090FE46 /* Extensions.swift */,
+				585AFDAB299EB48D0090FE46 /* Errors.swift */,
+				585AFDAD299EB5070090FE46 /* ChildrenViews.swift */,
+				585AFDAF299EB5760090FE46 /* Store.swift */,
 			);
 			path = "ios-client";
 			sourceTree = "<group>";
@@ -113,23 +117,6 @@
 				582A123929985C8B00931D26 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		582A124229985C8B00931D26 /* ios-clientTests */ = {
-			isa = PBXGroup;
-			children = (
-				582A124329985C8B00931D26 /* ios_clientTests.swift */,
-			);
-			path = "ios-clientTests";
-			sourceTree = "<group>";
-		};
-		582A124C29985C8B00931D26 /* ios-clientUITests */ = {
-			isa = PBXGroup;
-			children = (
-				582A124D29985C8B00931D26 /* ios_clientUITests.swift */,
-				582A124F29985C8B00931D26 /* ios_clientUITestsLaunchTests.swift */,
-			);
-			path = "ios-clientUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,9 +255,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				585AFDB0299EB5760090FE46 /* Store.swift in Sources */,
 				582A123529985C8A00931D26 /* ContentView.swift in Sources */,
+				585AFDAC299EB48D0090FE46 /* Errors.swift in Sources */,
 				582A123329985C8A00931D26 /* ios_clientApp.swift in Sources */,
 				583974D229985F170009121C /* MotionKit.swift in Sources */,
+				585AFDAA299EB47E0090FE46 /* Extensions.swift in Sources */,
+				585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +269,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				582A124429985C8B00931D26 /* ios_clientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,8 +276,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				582A124E29985C8B00931D26 /* ios_clientUITests.swift in Sources */,
-				582A125029985C8B00931D26 /* ios_clientUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

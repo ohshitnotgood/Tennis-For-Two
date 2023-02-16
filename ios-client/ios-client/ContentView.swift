@@ -2,11 +2,13 @@
 //  ContentView.swift
 //  ios-client
 //
+//
+//  This file contains declaration of the main entry view of the app.
+//
 //  Created by Praanto on 2023-02-12.
 //
 
 import SwiftUI
-import LabeledStepper
 
 /// Main entry point view of the app.
 struct ContentView: View {
@@ -18,10 +20,9 @@ struct ContentView: View {
     @State private var showFeatureNotImplemented    = false
     @State private var hasConnectionBeenEstablished = false
     
-    @State private var boardIPAddress               = ""
     
     @ObservedObject private var kit                 = MotionKit()
-    @ObservedObject private var settings            = SettingsValueStore()
+    @EnvironmentObject private var settings         : SettingsValueStore
     
     var body: some View {
         NavigationView {
@@ -43,7 +44,7 @@ struct ContentView: View {
                     HStack {
                         Text("Sensor refresh rate")
                         Spacer()
-                        Text("\(settings.sensorDataRefreshRate)Hz")
+                        Text("\(Int(settings.sensorDataRefreshRate))Hz")
                             .foregroundColor(.secondary)
                             .monospaced()
                     }
@@ -164,7 +165,7 @@ struct ContentView: View {
                 Text("Slide to adjust the sensor refresh rate")
             })
             .alert("Connect to the chip kit", isPresented: $showConnectToBoardAlert, actions: {
-                TextField("URL", text: $boardIPAddress)
+                TextField("URL", text: $settings.boardIPAddress)
                     .textInputAutocapitalization(.none)
                     .autocorrectionDisabled()
                 
@@ -197,87 +198,12 @@ struct ContentView: View {
     }
 }
 
-struct LogItemView: View {
-    let messageTitle: String
-    let messageBody: String
-    var body: some View {
-        HStack {
-            Text(messageTitle)
-            Spacer()
-            Text(messageBody)
-        }.padding()
-    }
-}
-
-struct CreditsView: View {
-    var body: some View {
-        NavigationView {
-            VStack {
-                
-            }.navigationTitle("Acknowledgements")
-        }
-    }
-}
-
-struct CoordinatesListingView: View {
-    var body: some View {
-        NavigationView {
-            List {
-                HStack {
-                    Text(Date().formatted(date: .abbreviated, time: .complete))
-                    Spacer()
-                    Text("20.321\n21.3212")
-                        .monospaced()
-                }
-            }
-            .listStyle(.grouped)
-            .navigationTitle("Coordinates History")
-        }
-    }
-}
-
-/// Stores settings data for the app.
-class SettingsValueStore: ObservableObject {
-    @Published var sensorDataRefreshRate = 100.0
-    @Published var connectionStatus = "Disconnected"
-    @Published var sensitivity = 6
-}
-
-struct SensitivitySliderView: View {
-    @State private var sensitivity = 0
-    var body: some View {
-        List {
-            Section {
-                HStack {
-                    Stepper("Sensitivity: \(sensitivity)", value: $sensitivity, in: 0...10)
-                }
-            } header: {
-                Text("Adjust Sensitivity")
-            }
-        }
-    }
-}
-
 
 // MARK: Previews
 @available(*, unavailable)
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-    }
-}
-
-@available(*, unavailable)
-struct CoordinatesListingView_Previews: PreviewProvider {
-    static var previews: some View {
-        CoordinatesListingView()
-    }
-}
-
-
-@available(*, unavailable)
-struct SensitivitySliderView_Previews: PreviewProvider {
-    static var previews: some View {
-        SensitivitySliderView()
+            .environmentObject(SettingsValueStore())
     }
 }
