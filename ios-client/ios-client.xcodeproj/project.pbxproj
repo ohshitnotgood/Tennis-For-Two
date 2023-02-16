@@ -17,6 +17,7 @@
 		585AFDAC299EB48D0090FE46 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAB299EB48D0090FE46 /* Errors.swift */; };
 		585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAD299EB5070090FE46 /* ChildrenViews.swift */; };
 		585AFDB0299EB5760090FE46 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAF299EB5760090FE46 /* Store.swift */; };
+		585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDB1299EBFD00090FE46 /* NetworkKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		585AFDAB299EB48D0090FE46 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		585AFDAD299EB5070090FE46 /* ChildrenViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildrenViews.swift; sourceTree = "<group>"; };
 		585AFDAF299EB5760090FE46 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		585AFDB1299EBFD00090FE46 /* NetworkKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				585AFDAB299EB48D0090FE46 /* Errors.swift */,
 				585AFDAD299EB5070090FE46 /* ChildrenViews.swift */,
 				585AFDAF299EB5760090FE46 /* Store.swift */,
+				585AFDB1299EBFD00090FE46 /* NetworkKit.swift */,
 			);
 			path = "ios-client";
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				585AFDAC299EB48D0090FE46 /* Errors.swift in Sources */,
 				582A123329985C8A00931D26 /* ios_clientApp.swift in Sources */,
 				583974D229985F170009121C /* MotionKit.swift in Sources */,
+				585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */,
 				585AFDAA299EB47E0090FE46 /* Extensions.swift in Sources */,
 				585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */,
 			);
