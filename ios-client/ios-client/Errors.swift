@@ -18,7 +18,8 @@ class GyroNotAvailableError: Error {
 }
 
 /// Error thrown when the device fails to establish connection with the WiFi board
-class ConnectionEstablishmentFailedError: Error {
-    
+enum ConnectionEstablishmentFailedError: Error {
+    case IPAddressNotDefined
+    case InvalidAddress
 }
 
