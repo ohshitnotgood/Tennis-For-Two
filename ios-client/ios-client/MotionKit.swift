@@ -118,13 +118,15 @@ class MotionKit: ObservableObject {
             calibratedCoordinate = 0.0
         }
         
-        if abs(accData) > 10 {
-            calibratedCoordinate = 1.0 * accData.signOf()
-        } else if abs(accData) > 20 {
-            calibratedCoordinate = 2.0 * accData.signOf()
-        } else if abs(accData) > 30 {
-            calibratedCoordinate = 3.0 * accData.signOf()
-        }
+        calibratedCoordinate = log(accData)
+        
+//        if abs(accData) > 10 {
+//            calibratedCoordinate = 1.0 * accData.signOf()
+//        } else if abs(accData) > 20 {
+//            calibratedCoordinate = 2.0 * accData.signOf()
+//        } else if abs(accData) > 30 {
+//            calibratedCoordinate = 3.0 * accData.signOf()
+//        }
         
         return calibratedCoordinate
     }

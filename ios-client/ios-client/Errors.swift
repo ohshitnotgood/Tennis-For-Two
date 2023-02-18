@@ -21,5 +21,6 @@ class GyroNotAvailableError: Error {
 enum ConnectionEstablishmentFailedError: Error {
     case IPAddressNotDefined
     case InvalidAddress
+    case SocketNotEstablished
 }
 
