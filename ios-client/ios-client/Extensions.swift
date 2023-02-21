@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension Double {
     func signOf() -> Int {
@@ -14,5 +15,15 @@ extension Double {
     
     func signOf() -> Double {
         return self > 0 ? 1.0 : -1.0
+    }
+}
+
+extension Array where Element == Int {
+    var mean: Double {
+        Double((self.reduce(0, +) / self.count))
+    }
+    
+    var meanInt: Int {
+        Int((self.reduce(0, +) / self.count))
     }
 }

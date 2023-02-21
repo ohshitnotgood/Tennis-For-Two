@@ -20,6 +20,10 @@ struct ContentView: View {
     @State private var showFeatureNotImplemented    = false
     @State private var hasConnectionBeenEstablished = false
     
+    @State private var anyErrorAlertMessage         = ""
+    @State private var showAnyErrorAlert            = false
+    
+    private var networkKit                          = NetworkKit()
     
     @ObservedObject private var kit                 = MotionKit()
     @EnvironmentObject private var settings         : SettingsValueStore
@@ -142,11 +146,15 @@ struct ContentView: View {
                 // MARK: Network Section
                 Section {
                     Button("Connect to the board") {
-                        showFeatureNotImplemented.toggle()
+                        showConnectToBoardAlert.toggle()
                     }
-                    Button("View network log") {
-                        showFeatureNotImplemented.toggle()
-                        
+                    Button("Send Sample Message") {
+                        do {
+                            try networkKit.sendMessage("sup, alin?")
+                        } catch {
+                            anyErrorAlertMessage = error.localizedDescription
+                            showAnyErrorAlert.toggle()
+                        }
                     }
                 } header: {
                     Text("Network")
@@ -159,26 +167,39 @@ struct ContentView: View {
                 CreditsView()
             })
             .alert("Connect to the chip kit", isPresented: $showConnectToBoardAlert, actions: {
-                TextField("URL", text: $settings.boardIPAddress)
+                TextField("WS/WSS URL", text: $settings.boardIPAddress)
                     .textInputAutocapitalization(.none)
                     .autocorrectionDisabled()
                 
                 Button("Cancel", role: .destructive, action: {
-                    
                 })
                 
                 Button("Connect", role: .cancel, action: {
-                    
+                    Task {
+                        do {
+                            try await networkKit.connectToBoard(settings.boardIPAddress)
+                            hasConnectionBeenEstablished = true
+                        } catch {
+                            anyErrorAlertMessage = error.localizedDescription
+                            showAnyErrorAlert.toggle()
+                        }
+                    }
                 })
             }, message: {
                 Text("Enter the IP address to establish connection with the board.")
             })
             .alert("Feature not implemented", isPresented: $showFeatureNotImplemented, actions: {
                 Button("Cancel", role: .cancel) {
-                    
                 }
             }, message: {
                 Text("This feature has not been implemented and thus cannot be invoked.")
+            })
+            .alert("An unexpected error occurred", isPresented: $showAnyErrorAlert, actions: {
+                Button("Okay", role: .cancel) {
+                    
+                }
+            }, message: {
+                Text(anyErrorAlertMessage)
             })
             .onAppear {
                 do {

@@ -12,12 +12,13 @@
 		582A123729985C8B00931D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 582A123629985C8B00931D26 /* Assets.xcassets */; };
 		582A123A29985C8B00931D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 582A123929985C8B00931D26 /* Preview Assets.xcassets */; };
 		583974D229985F170009121C /* MotionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583974D129985F170009121C /* MotionKit.swift */; };
-		585AFDA8299EB0BC0090FE46 /* LabeledStepper in Frameworks */ = {isa = PBXBuildFile; productRef = 585AFDA7299EB0BC0090FE46 /* LabeledStepper */; };
 		585AFDAA299EB47E0090FE46 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDA9299EB47E0090FE46 /* Extensions.swift */; };
 		585AFDAC299EB48D0090FE46 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAB299EB48D0090FE46 /* Errors.swift */; };
 		585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAD299EB5070090FE46 /* ChildrenViews.swift */; };
 		585AFDB0299EB5760090FE46 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAF299EB5760090FE46 /* Store.swift */; };
 		585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDB1299EBFD00090FE46 /* NetworkKit.swift */; };
+		58F9D4CA29A509C400A9EE05 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 58F9D4C929A509C400A9EE05 /* Logging */; };
+		58F9D4CC29A509E900A9EE05 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F9D4CB29A509E900A9EE05 /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		585AFDAD299EB5070090FE46 /* ChildrenViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildrenViews.swift; sourceTree = "<group>"; };
 		585AFDAF299EB5760090FE46 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		585AFDB1299EBFD00090FE46 /* NetworkKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkKit.swift; sourceTree = "<group>"; };
+		58F9D4CB29A509E900A9EE05 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				585AFDA8299EB0BC0090FE46 /* LabeledStepper in Frameworks */,
+				58F9D4CA29A509C400A9EE05 /* Logging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +112,7 @@
 				585AFDAD299EB5070090FE46 /* ChildrenViews.swift */,
 				585AFDAF299EB5760090FE46 /* Store.swift */,
 				585AFDB1299EBFD00090FE46 /* NetworkKit.swift */,
+				58F9D4CB29A509E900A9EE05 /* Logger.swift */,
 			);
 			path = "ios-client";
 			sourceTree = "<group>";
@@ -139,7 +142,7 @@
 			);
 			name = "ios-client";
 			packageProductDependencies = (
-				585AFDA7299EB0BC0090FE46 /* LabeledStepper */,
+				58F9D4C929A509C400A9EE05 /* Logging */,
 			);
 			productName = "ios-client";
 			productReference = 582A122F29985C8A00931D26 /* ios-client.app */;
@@ -214,7 +217,7 @@
 			);
 			mainGroup = 582A122629985C8A00931D26;
 			packageReferences = (
-				585AFDA6299EB0BC0090FE46 /* XCRemoteSwiftPackageReference "LabeledStepper" */,
+				58F9D4C829A509C400A9EE05 /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			productRefGroup = 582A123029985C8A00931D26 /* Products */;
 			projectDirPath = "";
@@ -262,6 +265,7 @@
 				582A123529985C8A00931D26 /* ContentView.swift in Sources */,
 				585AFDAC299EB48D0090FE46 /* Errors.swift in Sources */,
 				582A123329985C8A00931D26 /* ios_clientApp.swift in Sources */,
+				58F9D4CC29A509E900A9EE05 /* Logger.swift in Sources */,
 				583974D229985F170009121C /* MotionKit.swift in Sources */,
 				585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */,
 				585AFDAA299EB47E0090FE46 /* Extensions.swift in Sources */,
@@ -429,8 +433,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = "accelerometer gyroscope";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -438,9 +441,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.github.ohshitnotgood.ios-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -460,8 +466,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = "accelerometer gyroscope";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -469,9 +474,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.github.ohshitnotgood.ios-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -593,9 +601,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		585AFDA6299EB0BC0090FE46 /* XCRemoteSwiftPackageReference "LabeledStepper" */ = {
+		58F9D4C829A509C400A9EE05 /* XCRemoteSwiftPackageReference "swift-log" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MojtabaHs/LabeledStepper";
+			repositoryURL = "https://github.com/apple/swift-log";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
@@ -604,10 +612,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		585AFDA7299EB0BC0090FE46 /* LabeledStepper */ = {
+		58F9D4C929A509C400A9EE05 /* Logging */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 585AFDA6299EB0BC0090FE46 /* XCRemoteSwiftPackageReference "LabeledStepper" */;
-			productName = LabeledStepper;
+			package = 58F9D4C829A509C400A9EE05 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

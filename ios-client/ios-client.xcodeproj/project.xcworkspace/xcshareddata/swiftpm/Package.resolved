@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "labeledstepper",
+      "identity" : "swift-log",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MojtabaHs/LabeledStepper",
+      "location" : "https://github.com/apple/swift-log",
       "state" : {
-        "revision" : "121ce0ea9505c6d934093b9c5a613a290032952c",
-        "version" : "1.1.1"
+        "revision" : "32e8d724467f8fe623624570367e3d50c5638e46",
+        "version" : "1.5.2"
       }
     }
   ],
