@@ -65,7 +65,14 @@ struct ContentView: View {
                             .foregroundColor(.secondary)
                     }
                     
-                    DataDisplayView(text: "Connection Status", data: settings.connectionStatus)
+                    HStack {
+                        HStack {
+                            Text("Connection Status")
+                            Spacer()
+                            Text(String(settings.connectionStatus))
+                                .foregroundColor(.secondary)
+                        }
+                    }
                     
                     HStack {
                         Text("IP Address")
@@ -87,15 +94,45 @@ struct ContentView: View {
 #if DEBUG
                 // MARK: Accelerometer Section
                 Section {
-                    DataDisplayView(text: "x", data: "\(kit.accl_x)")
+                    HStack {
+                        Text("x")
+                        Spacer()
+                        Text(String(kit.accl_x))
+                            .monospaced()
+                            .foregroundColor(.secondary)
+                    }
                     
-                    DataDisplayView(text: "y", data: "\(kit.accl_y)")
+                    HStack {
+                        Text("y")
+                        Spacer()
+                        Text(String(kit.accl_y))
+                            .monospaced()
+                            .foregroundColor(.secondary)
+                    }
                     
-                    DataDisplayView(text: "z", data: "\(kit.accl_z)")
+                    HStack {
+                        Text("z")
+                        Spacer()
+                        Text(String(kit.accl_z))
+                            .monospaced()
+                            .foregroundColor(.secondary)
+                    }
                     
-                    DataDisplayView(text: "Max Positive Acceleration Data", data: String(kit.maxNegativeXAccelerationDetected))
+                    HStack {
+                        Text("Max Pos")
+                        Spacer()
+                        Text(String(kit.maxNegativeXAccelerationDetected))
+                            .monospaced()
+                            .foregroundColor(.secondary)
+                    }
                     
-                    DataDisplayView(text: "Max Negative Acceleration Data", data: String(kit.maxNegativeXAccelerationDetected))
+                    HStack {
+                        Text("Max Y")
+                        Spacer()
+                        Text(String(kit.maxNegativeXAccelerationDetected))
+                            .monospaced()
+                            .foregroundColor(.secondary)
+                    }
                     
                 } header: {
                     Text("Accelerometer Data")
@@ -151,27 +188,6 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("ios-client")
-        }
-    }
-}
-
-
-struct DataDisplayView: View {
-    let text: String
-    @State var data: String
-    
-    @State private var displayAsMonospaced = true
-    
-    var body: some View {
-        HStack {
-            Text(text)
-            Spacer()
-            Text(data)
-                .monospaced(displayAsMonospaced)
-                .foregroundColor(.secondary)
-        }.onAppear {
-            let data: Double? = Double(data)
-            displayAsMonospaced = data != nil
         }
     }
 }
