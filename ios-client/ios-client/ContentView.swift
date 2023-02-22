@@ -131,6 +131,13 @@ struct ContentView: View {
                             .foregroundColor(.secondary)
                     }
                     
+                    Button("Resume sensor update") {
+                        do {
+                            try kit.startUpdatingCoordinates()
+                        } catch {
+                        }
+                    }
+                    
                 } header: {
                     Text("Accelerometer Data")
                 }
@@ -144,7 +151,7 @@ struct ContentView: View {
                     Button("Send Sample Message") {
                         Task {
                             do {
-                                try await networkKit.sendMessageAsync()
+                                try await networkKit.sendMessage("sup yall")
                             } catch {
                                 anyErrorAlertMessage = error.localizedDescription
                                 showAnyErrorAlert.toggle()
@@ -161,6 +168,7 @@ struct ContentView: View {
             .sheet(isPresented: $showCreditsSheet, content: {
                 CreditsView()
             })
+            // MARK: ChipKit connect alert
             .alert("Connect to the chip kit", isPresented: $showConnectToBoardAlert, actions: {
                 TextField("WS/WSS URL", text: $settings.boardIPAddress)
                     .textInputAutocapitalization(.none)
@@ -172,7 +180,7 @@ struct ContentView: View {
                 Button("Connect", role: .cancel, action: {
                     Task {
                         do {
-                            try networkKit.connectToServer(settings.boardIPAddress)
+                            try await networkKit.connectToServer(settings.boardIPAddress)
                             hasConnectionBeenEstablished = true
                         } catch {
                             anyErrorAlertMessage = error.localizedDescription
@@ -183,6 +191,7 @@ struct ContentView: View {
             }, message: {
                 Text("Enter the IP address to establish connection with the board.")
             })
+            // MARK: Feature Implement alert
             .alert("Feature not implemented", isPresented: $showFeatureNotImplemented, actions: {
                 Button("Cancel", role: .cancel) {
                 }

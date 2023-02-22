@@ -57,6 +57,8 @@ class MotionKit: ObservableObject {
     private var queue       = OperationQueue()
     private var manager     = CMMotionManager()
     
+    private let dispatchQueue = DispatchQueue.main
+    
     /// Starts updating values in ``latestCoordinate``.
     func startUpdatingCoordinates() throws {
         if !manager.isAccelerometerAvailable {
@@ -96,7 +98,7 @@ class MotionKit: ObservableObject {
     
     // MARK: Sensor Data Comp Funcs
     private func computeAcceleration(_ accelerationData: CMAcceleration) {
-        DispatchQueue.main.async {
+        dispatchQueue.async {
             self.accl_x = accelerationData.x
             self.accl_y = accelerationData.y
             self.accl_z = accelerationData.z
@@ -104,7 +106,7 @@ class MotionKit: ObservableObject {
     }
     
     private func computeTilt(_ tiltData: CMGyroData) {
-        DispatchQueue.main.async {
+        dispatchQueue.async {
             self.tilt_x = Int(tiltData.rotationRate.x)
             self.tilt_y = Int(tiltData.rotationRate.y)
             self.tilt_z = Int(tiltData.rotationRate.z)
@@ -113,7 +115,7 @@ class MotionKit: ObservableObject {
     
     // MARK: computeXYCoordinate
     private func computeXYCoordinate(_ accelerationData: CMAcceleration) {
-        DispatchQueue.main.async { [self] in
+        dispatchQueue.async { [self] in
 //            Assuming the phone is being held in portrait, screen facing user.
 //            let acc_data_x = accelerationData.x * 500
 //            let acc_data_y = accelerationData.y * 500
@@ -161,46 +163,6 @@ class MotionKit: ObservableObject {
     
     // MARK: getCalibratedCoordinates
     private func getCalibratedCoordinate(_ accData: Double) -> Double {
-        var calibratedCoordinate: Double = 0.0
-//
-//        if accData > (2 * 500) {
-//            calibratedCoordinate = 120.0
-//        } else if accData < (-2 * 500) {
-//            calibratedCoordinate = 0.0
-//        }
-        
-        
-//        for (j in 0..4)
-//                    {
-//                        bufferx[j] = bufferx[j+1];
-//                        buffery[j] = buffery[j+1];
-//                    }
-//                    bufferx[0] = (accX*3).toInt();
-//                    buffery[0] = (accY*3).toInt();
-//
-//                    xsmooth = (bufferx[0] + bufferx[1] + bufferx[2] + bufferx[3] + bufferx[4]) / 5;
-//                    ysmooth = (buffery[0] + buffery[1] + buffery[2] + buffery[3] + buffery[4]) / 5;
-
-        if global_i != 5 {
-            bufferX[global_i] = Int(accl_x * 3)
-            bufferY[global_i] = Int(accl_y * 3)
-            xSmooth = 0
-            ySmooth = 0
-            global_i = 0
-        } else {
-            for each_step in 0...4 {
-                bufferX[each_step] = bufferX[each_step + 1]
-                bufferY[each_step] = bufferY[each_step + 1]
-            }
-            
-            bufferX[0] = Int(accl_x * 3)
-            bufferY[0] = Int(accl_y * 3)
-            
-            xSmooth = bufferX.meanInt
-            ySmooth = bufferY.meanInt
-//            xSmooth = bufferX.reduce(0, +) / bufferX.count
-//            ySmooth = bufferY.reduce(0, +) / bufferY.count
-        }
-        return calibratedCoordinate
+        return 0
     }
 }

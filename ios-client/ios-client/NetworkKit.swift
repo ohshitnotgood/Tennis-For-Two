@@ -5,115 +5,81 @@
 //  Created by Praanto on 2023-02-16.
 //
 
-import Foundation
 import Logging
-import Starscream
 import SwiftUI
+import Combine
 
 /// Handles sending and receiving websocket data in this project.
 class NetworkKit: NSObject, ObservableObject {
-    private var socket: URLSessionWebSocketTask? = nil
-    
+    @Published private var socket: URLSessionWebSocketTask? = nil
     private let logger = Logger(label: Logger.TAG_WS)
-    private let operationQueue = OperationQueue()
     
     @Published var socketHasBeenEstablished = false
     
-    /// Establishes a new websocket connection with the address provided.
+    /// Attempts to connect to a WebSocket server using the provided `ws` address.
     ///
-    /// Will throw an error if the address is invalid and cannot be casted to an `URL` object.
-    func connectToServer(_ address: String) throws {
-        logger.info("Connecting to \(address)")
-        if let url = URL(string: address) {
-            DispatchQueue.main.async {
-                let urlRequest = URLRequest(url: url)
-                let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: self.operationQueue)
-                self.socket = urlSession.webSocketTask(with: urlRequest)
-                self.socket?.maximumMessageSize = 10_000_0000
-                self.socket?.resume()
-                self.socketHasBeenEstablished = true
-                self.logger.info("Connection succeeded: \(self.socketHasBeenEstablished)")
-                self.socket?.send(URLSessionWebSocketTask.Message.string("sup alin!"), completionHandler: { error in
-                    
-                })
-            }
-        } else {
-            throw ConnectionEstablishmentFailedError.InvalidAddress
-        }
-    }
-    
-    func connectToServerAsync(_ address: String) async throws {
+    /// Does  **not** try to validate if the URL is a websocket or an HTTP url.
+    ///
+    /// Additionally, this function should throw an error if the provided address
+    /// is not `ws`.
+    func connectToServer(_ address: String) async throws {
         logger.info("Connectiong to server at address: \(address)")
-        if let url = URL(string: address) {
-            let urlRequst = URLRequest(url: url)
-            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-            self.socket = urlSession.webSocketTask(with: urlRequst)
-            try await self.socket?.send(URLSessionWebSocketTask.Message.string("sup world"))
-        } else {
-            throw ConnectionEstablishmentFailedError.InvalidAddress
+        guard let url = URL(string: address) else {
+            throw ConnectionFailedError.InvalidAddress
         }
-    }
-    
-    /// Sends message to the websocket server after a connection has been established
-    ///
-    /// Will throw an error if no connection exists.
-    func sendMessage(_ data: String) throws {
-        socket?.resume()
-        logger.info("Sending data: \(data) to websocket server.")
-        let message = URLSessionWebSocketTask.Message.string(data)
         
+        self.socket = URLSession(configuration: .default, delegate: self, delegateQueue: nil).webSocketTask(with: url)
+        
+        guard let socket = socket else {
+            throw ConnectionFailedError.AddressNotInWebSocketFormat
+        }
+        
+        socket.resume()
         DispatchQueue.main.async {
-            self.socket?.send(message, completionHandler: { error in
-                guard let error = error else {
-                    self.logger.error("Unknown error")
-                    return
-                }
-                
-                self.logger.error(Logger.Message(stringLiteral: error.localizedDescription))
-            })
+            self.socketHasBeenEstablished = true
         }
     }
-    
-    func sendMessageAsync() async throws {
-        try await socket?.send(URLSessionWebSocketTask.Message.string("sup world"))
-        let response = try await socket?.receive()
-        switch response {
-            case .data(_): print("")
-            case .string(let string): print("Received message: \(string)")
-            case .none: print("Received no message")
-            case .some(_): print("Received unparsable data")
+
+    /// Asynchronously sends message to the websocket server.
+    ///
+    /// Will throw an error if the connection has not been established.
+    func sendMessage(_ message: String) async throws {
+        if !self.socketHasBeenEstablished {
+            throw ConnectionFailedError.SocketNotEstablished
         }
+        
+        logger.info("Sending data to websocket server.")
+        let message = URLSessionWebSocketTask.Message.string(message)
+        try await socket?.send(message)
+        logger.info("Sent message to server.")
     }
     
     
-    /// Starts listening for incoming data from the server.
+    /// Starts listening for incoming data from the server in the background.
     ///
     /// Will throw error if device is not connected to any server. Use ``connectToBoard(_:)`` first before calling this function.
-    func startListening() throws {
-        if !socketHasBeenEstablished {
-            throw ConnectionEstablishmentFailedError.SocketNotEstablished
+    ///
+    /// It is **not** required to call this function inside a `Task` block or inside an `async`function as it already launches a `DispatchQueue` with label `background-socket`.
+    func startListening() {
+        DispatchQueue(label: "background-socket", qos: .background).async {
+            self.socket?.receive(completionHandler: { (result) in
+                switch result {
+                    case .success(let message):
+                        switch message {
+                            case .data(let data): self.logger.info("Received data from server: \(data)")
+                            case .string(let string): self.logger.info("Received string message from server: \(string)")
+                            @unknown default: return
+                        }
+                        
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                }
+            })
+            
+            self.startListening()
         }
-        
-        self.socket?.receive(completionHandler: { (result) in
-            switch result {
-                case .success(let message):
-                    switch message {
-                        case .data(let data): self.logger.info("Received data from server: \(data)")
-                        case .string(let string): self.logger.info("Received string message from server: \(string)")
-                        @unknown default: return
-                    }
-                    
-                case .failure(let error):
-                    print(error.localizedDescription)
-            }
-        })
-        
-        try startListening()
     }
 }
 
 extension NetworkKit: URLSessionWebSocketDelegate {
-    func sendData() {
-        
-    }
 }

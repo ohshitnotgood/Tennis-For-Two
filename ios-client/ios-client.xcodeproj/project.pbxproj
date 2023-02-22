@@ -17,6 +17,7 @@
 		585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAD299EB5070090FE46 /* ChildrenViews.swift */; };
 		585AFDB0299EB5760090FE46 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAF299EB5760090FE46 /* Store.swift */; };
 		585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDB1299EBFD00090FE46 /* NetworkKit.swift */; };
+		58CD27ED29A61E9100D013AA /* NetworkDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CD27EC29A61E9100D013AA /* NetworkDebugView.swift */; };
 		58F9D4CA29A509C400A9EE05 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 58F9D4C929A509C400A9EE05 /* Logging */; };
 		58F9D4CC29A509E900A9EE05 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F9D4CB29A509E900A9EE05 /* Logger.swift */; };
 		58F9D4D029A52C5A00A9EE05 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 58F9D4CF29A52C5A00A9EE05 /* Starscream */; };
@@ -53,6 +54,7 @@
 		585AFDAD299EB5070090FE46 /* ChildrenViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildrenViews.swift; sourceTree = "<group>"; };
 		585AFDAF299EB5760090FE46 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		585AFDB1299EBFD00090FE46 /* NetworkKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkKit.swift; sourceTree = "<group>"; };
+		58CD27EC29A61E9100D013AA /* NetworkDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDebugView.swift; sourceTree = "<group>"; };
 		58F9D4CB29A509E900A9EE05 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +117,7 @@
 				585AFDAF299EB5760090FE46 /* Store.swift */,
 				585AFDB1299EBFD00090FE46 /* NetworkKit.swift */,
 				58F9D4CB29A509E900A9EE05 /* Logger.swift */,
+				58CD27EC29A61E9100D013AA /* NetworkDebugView.swift */,
 			);
 			path = "ios-client";
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				58F9D4CC29A509E900A9EE05 /* Logger.swift in Sources */,
 				583974D229985F170009121C /* MotionKit.swift in Sources */,
 				585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */,
+				58CD27ED29A61E9100D013AA /* NetworkDebugView.swift in Sources */,
 				585AFDAA299EB47E0090FE46 /* Extensions.swift in Sources */,
 				585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */,
 			);
