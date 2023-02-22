@@ -18,7 +18,7 @@ class SettingsValueStore: ObservableObject {
     @Published var sensorDataRefreshRate = 100.0
     @Published var connectionStatus = "Disconnected"
     @Published var sensitivity = 6
-    @Published var boardIPAddress = ""
+    @Published var boardIPAddress = "ws://192.168.0.101:8080"
     
     private let socket: URLSessionWebSocketTask? = nil
     

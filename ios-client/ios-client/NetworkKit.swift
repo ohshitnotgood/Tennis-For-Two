@@ -7,74 +7,84 @@
 
 import Foundation
 import Logging
+import Starscream
+import SwiftUI
 
-class NetworkKit: NSObject {
+/// Handles sending and receiving websocket data in this project.
+class NetworkKit: NSObject, ObservableObject {
     private var socket: URLSessionWebSocketTask? = nil
-    private var socketHasBeenEstablished = false
-    
-    private var shouldContinueListening = false
     
     private let logger = Logger(label: Logger.TAG_WS)
+    private let operationQueue = OperationQueue()
+    
+    @Published var socketHasBeenEstablished = false
     
     /// Establishes a new websocket connection with the address provided.
     ///
     /// Will throw an error if the address is invalid and cannot be casted to an `URL` object.
-    func connectToBoard(_ address: String) async throws {
+    func connectToServer(_ address: String) throws {
         logger.info("Connecting to \(address)")
         if let url = URL(string: address) {
-            let urlRequest = URLRequest(url: url)
-            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-            self.socket = urlSession.webSocketTask(with: urlRequest)
-            self.socket?.resume()
-            logger.info("Connection succeeded.")
-            socketHasBeenEstablished = true
+            DispatchQueue.main.async {
+                let urlRequest = URLRequest(url: url)
+                let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: self.operationQueue)
+                self.socket = urlSession.webSocketTask(with: urlRequest)
+                self.socket?.maximumMessageSize = 10_000_0000
+                self.socket?.resume()
+                self.socketHasBeenEstablished = true
+                self.logger.info("Connection succeeded: \(self.socketHasBeenEstablished)")
+                self.socket?.send(URLSessionWebSocketTask.Message.string("sup alin!"), completionHandler: { error in
+                    
+                })
+            }
         } else {
             throw ConnectionEstablishmentFailedError.InvalidAddress
         }
     }
     
-    func pauseConnectionToBoard() async throws {
-        if !socketHasBeenEstablished {
-            throw ConnectionEstablishmentFailedError.SocketNotEstablished
+    func connectToServerAsync(_ address: String) async throws {
+        logger.info("Connectiong to server at address: \(address)")
+        if let url = URL(string: address) {
+            let urlRequst = URLRequest(url: url)
+            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+            self.socket = urlSession.webSocketTask(with: urlRequst)
+            try await self.socket?.send(URLSessionWebSocketTask.Message.string("sup world"))
+        } else {
+            throw ConnectionEstablishmentFailedError.InvalidAddress
         }
-        
     }
     
-    func pauseListening() {
-        shouldContinueListening = false
-    }
-    
-    func killConnectionToBoard() async throws {
-        if !socketHasBeenEstablished {
-            throw ConnectionEstablishmentFailedError.SocketNotEstablished
-        }
-        
-        socketHasBeenEstablished = false
-    }
-    
+    /// Sends message to the websocket server after a connection has been established
+    ///
+    /// Will throw an error if no connection exists.
     func sendMessage(_ data: String) throws {
-//        if !socketHasBeenEstablished {
-//            logger.error("Failed to send data. Socket has not been established.")
-//            throw ConnectionEstablishmentFailedError.SocketNotEstablished
-//        }
-        
+        socket?.resume()
         logger.info("Sending data: \(data) to websocket server.")
         let message = URLSessionWebSocketTask.Message.string(data)
-        socket?.send(message, completionHandler: { error in
-            guard let error = error else {
-                self.logger.error("Unknown error")
-                return
-            }
-            
-            self.logger.error(Logger.Message(stringLiteral: error.localizedDescription))
-        })
+        
+        DispatchQueue.main.async {
+            self.socket?.send(message, completionHandler: { error in
+                guard let error = error else {
+                    self.logger.error("Unknown error")
+                    return
+                }
+                
+                self.logger.error(Logger.Message(stringLiteral: error.localizedDescription))
+            })
+        }
     }
     
-    func ping(_ message: String) {
-        socket?.sendPing(pongReceiveHandler: { error in
-            
-        })
+    func sendMessageAsync() async throws {
+        try await socket?.send(URLSessionWebSocketTask.Message.string("sup world"))
+        let response = try await socket?.receive()
+        switch response {
+            case .data(_): print("")
+            case .string(let string): print("Received message: \(string)")
+            case .none: print("Received no message")
+            case .some(_): print("Received unparsable data")
+        }
     }
+    
     
     /// Starts listening for incoming data from the server.
     ///
@@ -88,8 +98,8 @@ class NetworkKit: NSObject {
             switch result {
                 case .success(let message):
                     switch message {
-                        case .data(let data): self.logger.info("\(data)")
-                        case .string(let string): self.logger.info("\(string)")
+                        case .data(let data): self.logger.info("Received data from server: \(data)")
+                        case .string(let string): self.logger.info("Received string message from server: \(string)")
                         @unknown default: return
                     }
                     
@@ -98,15 +108,12 @@ class NetworkKit: NSObject {
             }
         })
         
-        if shouldContinueListening {
-            try startListening()
-        }
+        try startListening()
     }
 }
 
 extension NetworkKit: URLSessionWebSocketDelegate {
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
-        socketHasBeenEstablished = true
+    func sendData() {
+        
     }
-    
 }

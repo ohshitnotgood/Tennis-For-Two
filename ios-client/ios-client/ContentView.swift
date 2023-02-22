@@ -63,17 +63,10 @@ struct ContentView: View {
                     }
                     
                     HStack {
-                        Text("Connection Status")
-                        Spacer()
-                        Text("Disconnected")
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    HStack {
                         HStack {
                             Text("Connection Status")
                             Spacer()
-                            Text(String(settings.connectionStatus))
+                            Text(networkKit.socketHasBeenEstablished ? "Connected" : "Disconnected")
                                 .foregroundColor(.secondary)
                         }
                     }
@@ -149,11 +142,13 @@ struct ContentView: View {
                         showConnectToBoardAlert.toggle()
                     }
                     Button("Send Sample Message") {
-                        do {
-                            try networkKit.sendMessage("sup, alin?")
-                        } catch {
-                            anyErrorAlertMessage = error.localizedDescription
-                            showAnyErrorAlert.toggle()
+                        Task {
+                            do {
+                                try await networkKit.sendMessageAsync()
+                            } catch {
+                                anyErrorAlertMessage = error.localizedDescription
+                                showAnyErrorAlert.toggle()
+                            }
                         }
                     }
                 } header: {
@@ -177,7 +172,7 @@ struct ContentView: View {
                 Button("Connect", role: .cancel, action: {
                     Task {
                         do {
-                            try await networkKit.connectToBoard(settings.boardIPAddress)
+                            try networkKit.connectToServer(settings.boardIPAddress)
                             hasConnectionBeenEstablished = true
                         } catch {
                             anyErrorAlertMessage = error.localizedDescription
