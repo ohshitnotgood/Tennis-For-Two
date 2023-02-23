@@ -23,5 +23,8 @@ enum ConnectionFailedError: Error {
     case InvalidAddress
     case SocketNotEstablished
     case AddressNotInWebSocketFormat
+    case UnparsableResponseData
+    case HandshakeFailed
+    case ResponseTimeout
 }
 

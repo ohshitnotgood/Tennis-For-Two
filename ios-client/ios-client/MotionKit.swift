@@ -78,7 +78,7 @@ class MotionKit: ObservableObject {
             }
             if let validData = data {
                 computeAcceleration(validData.userAcceleration)
-//                computeXYCoordinate(validData.userAcceleration)
+                computeXYCoordinate(validData.userAcceleration)
             }
         }
         
@@ -116,47 +116,6 @@ class MotionKit: ObservableObject {
     // MARK: computeXYCoordinate
     private func computeXYCoordinate(_ accelerationData: CMAcceleration) {
         dispatchQueue.async { [self] in
-//            Assuming the phone is being held in portrait, screen facing user.
-//            let acc_data_x = accelerationData.x * 500
-//            let acc_data_y = accelerationData.y * 500
-//            let dist_x = getCalibratedCoordinate(acc_data_x)
-//            let dist_y = getCalibratedCoordinate(acc_data_y)
-//
-//            x += Int(dist_x)
-//            y += Int(dist_y)
-            
-            if global_i != 5 {
-                bufferX[global_i] = Int(accl_x * 3)
-                bufferY[global_i] = Int(accl_y * 3)
-                xSmooth = 0
-                ySmooth = 0
-                global_i = 0
-            } else {
-                for each_step in 0...4 {
-                    bufferX[each_step] = bufferX[each_step + 1]
-                    bufferY[each_step] = bufferY[each_step + 1]
-                }
-                
-                bufferX[0] = Int(accl_x * 3)
-                bufferY[0] = Int(accl_y * 3)
-                
-                xSmooth = bufferX.meanInt
-                ySmooth = bufferY.meanInt
-            }
-            
-            if maxPositiveXAccelerationDetected < xSmooth {
-                maxPositiveXAccelerationDetected = xSmooth;
-                xSpeed = maxPositiveXAccelerationDetected;
-            } else if xSmooth < 0 {
-                maxPositiveXAccelerationDetected -= xSmooth;
-            }
-
-            if maxNegativeXAccelerationDetected < ySmooth {
-                maxNegativeXAccelerationDetected = ySmooth;
-                ySpeed = maxNegativeXAccelerationDetected;
-            } else if ySmooth < 0 {
-                maxNegativeXAccelerationDetected -= ySmooth;
-            }
             
         }
     }

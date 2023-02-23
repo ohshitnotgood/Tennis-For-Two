@@ -84,3 +84,4 @@ struct SensitivitySliderView_Previews: PreviewProvider {
             .environmentObject(SettingsValueStore())
     }
 }
+
