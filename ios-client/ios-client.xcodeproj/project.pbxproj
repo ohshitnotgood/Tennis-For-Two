@@ -17,10 +17,11 @@
 		585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAD299EB5070090FE46 /* ChildrenViews.swift */; };
 		585AFDB0299EB5760090FE46 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDAF299EB5760090FE46 /* Store.swift */; };
 		585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585AFDB1299EBFD00090FE46 /* NetworkKit.swift */; };
+		58714F7B29A6BFD700D5B380 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 58714F7A29A6BFD700D5B380 /* Introspect */; };
+		58714F7D29A6C03400D5B380 /* NetworkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58714F7C29A6C03400D5B380 /* NetworkSettingsView.swift */; };
 		58CD27ED29A61E9100D013AA /* NetworkDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CD27EC29A61E9100D013AA /* NetworkDebugView.swift */; };
 		58F9D4CA29A509C400A9EE05 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 58F9D4C929A509C400A9EE05 /* Logging */; };
 		58F9D4CC29A509E900A9EE05 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F9D4CB29A509E900A9EE05 /* Logger.swift */; };
-		58F9D4D029A52C5A00A9EE05 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 58F9D4CF29A52C5A00A9EE05 /* Starscream */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		585AFDAD299EB5070090FE46 /* ChildrenViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildrenViews.swift; sourceTree = "<group>"; };
 		585AFDAF299EB5760090FE46 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		585AFDB1299EBFD00090FE46 /* NetworkKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkKit.swift; sourceTree = "<group>"; };
+		58714F7C29A6C03400D5B380 /* NetworkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSettingsView.swift; sourceTree = "<group>"; };
 		58CD27EC29A61E9100D013AA /* NetworkDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDebugView.swift; sourceTree = "<group>"; };
 		58F9D4CB29A509E900A9EE05 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,7 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58F9D4CA29A509C400A9EE05 /* Logging in Frameworks */,
-				58F9D4D029A52C5A00A9EE05 /* Starscream in Frameworks */,
+				58714F7B29A6BFD700D5B380 /* Introspect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +90,7 @@
 		582A122629985C8A00931D26 = {
 			isa = PBXGroup;
 			children = (
+				58714F7C29A6C03400D5B380 /* NetworkSettingsView.swift */,
 				582A123129985C8A00931D26 /* ios-client */,
 				582A123029985C8A00931D26 /* Products */,
 			);
@@ -148,7 +151,7 @@
 			name = "ios-client";
 			packageProductDependencies = (
 				58F9D4C929A509C400A9EE05 /* Logging */,
-				58F9D4CF29A52C5A00A9EE05 /* Starscream */,
+				58714F7A29A6BFD700D5B380 /* Introspect */,
 			);
 			productName = "ios-client";
 			productReference = 582A122F29985C8A00931D26 /* ios-client.app */;
@@ -224,7 +227,7 @@
 			mainGroup = 582A122629985C8A00931D26;
 			packageReferences = (
 				58F9D4C829A509C400A9EE05 /* XCRemoteSwiftPackageReference "swift-log" */,
-				58F9D4CE29A52C5A00A9EE05 /* XCRemoteSwiftPackageReference "Starscream" */,
+				58714F7929A6BFD700D5B380 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 582A123029985C8A00931D26 /* Products */;
 			projectDirPath = "";
@@ -276,6 +279,7 @@
 				583974D229985F170009121C /* MotionKit.swift in Sources */,
 				585AFDB2299EBFD00090FE46 /* NetworkKit.swift in Sources */,
 				58CD27ED29A61E9100D013AA /* NetworkDebugView.swift in Sources */,
+				58714F7D29A6C03400D5B380 /* NetworkSettingsView.swift in Sources */,
 				585AFDAA299EB47E0090FE46 /* Extensions.swift in Sources */,
 				585AFDAE299EB5070090FE46 /* ChildrenViews.swift in Sources */,
 			);
@@ -609,6 +613,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		58714F7929A6BFD700D5B380 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
+			};
+		};
 		58F9D4C829A509C400A9EE05 /* XCRemoteSwiftPackageReference "swift-log" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-log";
@@ -617,26 +629,18 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		58F9D4CE29A52C5A00A9EE05 /* XCRemoteSwiftPackageReference "Starscream" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/daltoniam/Starscream";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		58714F7A29A6BFD700D5B380 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 58714F7929A6BFD700D5B380 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
 		58F9D4C929A509C400A9EE05 /* Logging */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 58F9D4C829A509C400A9EE05 /* XCRemoteSwiftPackageReference "swift-log" */;
 			productName = Logging;
-		};
-		58F9D4CF29A52C5A00A9EE05 /* Starscream */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 58F9D4CE29A52C5A00A9EE05 /* XCRemoteSwiftPackageReference "Starscream" */;
-			productName = Starscream;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

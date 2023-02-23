@@ -13,6 +13,7 @@ import Combine
 class NetworkKit: NSObject, ObservableObject {
     @Published private var socket: URLSessionWebSocketTask? = nil
     private let logger = Logger(label: Logger.TAG_WS)
+    private let queue = DispatchQueue(label: DispatchQueue.NETWORK_SOCKET, qos: .background)
     
     @Published var socketHasBeenEstablished = false
     
@@ -22,7 +23,7 @@ class NetworkKit: NSObject, ObservableObject {
     ///
     /// Additionally, this function should throw an error if the provided address
     /// is not `ws`.
-    func connectToServer(_ address: String) async throws {
+    func connectToServer(_ address: String) throws {
         logger.info("Connectiong to server at address: \(address)")
         guard let url = URL(string: address) else {
             throw ConnectionFailedError.InvalidAddress
@@ -34,7 +35,9 @@ class NetworkKit: NSObject, ObservableObject {
             throw ConnectionFailedError.AddressNotInWebSocketFormat
         }
         
+//        queue.async {
         socket.resume()
+//        }
         DispatchQueue.main.async {
             self.socketHasBeenEstablished = true
         }

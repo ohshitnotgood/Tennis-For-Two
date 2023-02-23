@@ -27,3 +27,8 @@ extension Array where Element == Int {
         Int((self.reduce(0, +) / self.count))
     }
 }
+
+extension DispatchQueue {
+    static let NETWORK_SOCKET           = "ws-network-background-0x000010A"
+    static let DEVICE_SENSOR_UPDATE     = "device-sensor-update-main-0x000010B"
+}

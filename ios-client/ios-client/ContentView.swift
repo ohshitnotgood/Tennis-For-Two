@@ -15,7 +15,7 @@ struct ContentView: View {
     @State private var showCoordinatesHistory       = false
     @State private var showAppLog                   = false
     @State private var showCreditsSheet             = false
-    @State private var showConnectToBoardAlert      = false
+    @State private var showConnectToBoardSheet      = false
     @State private var showRefreshRateAlert         = false
     @State private var showFeatureNotImplemented    = false
     @State private var hasConnectionBeenEstablished = false
@@ -146,7 +146,7 @@ struct ContentView: View {
                 // MARK: Network Section
                 Section {
                     Button("Connect to the board") {
-                        showConnectToBoardAlert.toggle()
+                        showConnectToBoardSheet.toggle()
                     }
                     Button("Send Sample Message") {
                         Task {
@@ -168,28 +168,8 @@ struct ContentView: View {
             .sheet(isPresented: $showCreditsSheet, content: {
                 CreditsView()
             })
-            // MARK: ChipKit connect alert
-            .alert("Connect to the chip kit", isPresented: $showConnectToBoardAlert, actions: {
-                TextField("WS/WSS URL", text: $settings.boardIPAddress)
-                    .textInputAutocapitalization(.none)
-                    .autocorrectionDisabled()
-                
-                Button("Cancel", role: .destructive, action: {
-                })
-                
-                Button("Connect", role: .cancel, action: {
-                    Task {
-                        do {
-                            try await networkKit.connectToServer(settings.boardIPAddress)
-                            hasConnectionBeenEstablished = true
-                        } catch {
-                            anyErrorAlertMessage = error.localizedDescription
-                            showAnyErrorAlert.toggle()
-                        }
-                    }
-                })
-            }, message: {
-                Text("Enter the IP address to establish connection with the board.")
+            .sheet(isPresented: $showConnectToBoardSheet, content: {
+                NetworkSettingsView()
             })
             // MARK: Feature Implement alert
             .alert("Feature not implemented", isPresented: $showFeatureNotImplemented, actions: {
@@ -212,7 +192,7 @@ struct ContentView: View {
                     print(error.localizedDescription)
                 }
             }
-            .navigationTitle("ios-client")
+            .navigationTitle("App Debug")
         }
     }
 }
