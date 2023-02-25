@@ -33,6 +33,7 @@ struct SensorDebugView: View {
                         Text("x_ax\ny_ax\nz_ax")
                         Spacer()
                         Text("\(motion.user_accl_x)\n\(motion.user_accl_y)\n\(motion.user_accl_z)")
+                            .multilineTextAlignment(.trailing)
                             .monospaced()
                     }
                 } header: {
@@ -46,6 +47,7 @@ struct SensorDebugView: View {
                         Spacer()
                         Text("\(Int(motion.user_accl_x * multiplierConst))\n\(Int(motion.user_accl_y * multiplierConst))\n\(Int(motion.user_accl_z * multiplierConst))")
                             .monospaced()
+                            .multilineTextAlignment(.trailing)
                     }
                     
                     HStack {
@@ -70,7 +72,9 @@ struct SensorDebugView: View {
                         
                         Spacer()
                         
-                        Text("\(motion.raw_accl_x)\n\(motion.raw_accl_z)\n\(motion.raw_accl_z)")
+                        Text("\(motion.raw_accl_x)\n\(motion.raw_accl_y)\n\(motion.raw_accl_z)")
+                            .monospaced()
+                            .multilineTextAlignment(.trailing)
                     }
                 } header: {
                     Text("Raw Acceleration Data")
@@ -82,7 +86,7 @@ struct SensorDebugView: View {
                         Spacer()
                         Text("\(Int(motion.raw_accl_x * multiplierConst))\n\(Int(motion.raw_accl_y * multiplierConst))\n\(Int(motion.raw_accl_z * multiplierConst))")
                             .monospaced()
-
+                            .multilineTextAlignment(.trailing)
                     }
                     
                     HStack {

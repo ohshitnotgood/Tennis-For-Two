@@ -28,6 +28,39 @@ extension Array where Element == Int {
     }
 }
 
+extension Array where Element == Double {
+    var isIncreasing: Bool {
+        if self.count < 2 {
+            return false
+        }
+        
+        if self[self.endIndex - 1] > self[self.endIndex - 2] {
+            return true
+        }
+        
+        return false
+    }
+    
+    var isDecreasing: Bool {
+        if self.count < 2 {
+            return false
+        }
+        
+        if self[self.endIndex - 1] < self[self.endIndex - 2] {
+            return true
+        }
+        
+        return false
+    }
+    
+    mutating func append(element: Element) {
+        if self.count >= 10 {
+            self.removeFirst()
+        }
+        self.append(element)
+    }
+}
+
 extension DispatchQueue {
     static let NETWORK_SOCKET                   = "ws-network-background-0x000010A"
     static let DEVICE_SENSOR_UPDATE             = "device-sensor-update-main-0x000010B"

@@ -37,7 +37,7 @@ class MotionKit: ObservableObject {
     }
     @Published var y = 0 {
         didSet {
-            if self.y > 30 { self.y = 30 }
+            if self.y > 300 { self.y = 30 }
             if self.y < 0 { self.y = 0 }
         }
     }
@@ -54,7 +54,18 @@ class MotionKit: ObservableObject {
     private var manager     = CMMotionManager()
     private var logger      = Logger(label: Logger.TAG_MOTION_KIT)
     
+    private var userAcceleration: CMAcceleration? = nil
+    private var rawAcceleration: CMAcceleration? = nil
+    
     private let dispatchQueue = DispatchQueue.main
+    
+    private var buffer_user_x: [Double] = []
+    private var buffer_user_y: [Double] = []
+    
+    private var buffer_raw_x: [Double] = []
+    private var buffer_raw_y: [Double] = []
+    
+    private var didInitialDecelerationFinish = false
     
     /// Starts updating values in ``latestCoordinate``.
     func startUpdatingCoordinates() throws {
@@ -69,7 +80,8 @@ class MotionKit: ObservableObject {
         }
         
         logger.info("Starting fetching accelerometer data")
-        self.manager.deviceMotionUpdateInterval = 1.0 / 60.0
+        self.manager.showsDeviceMovementDisplay = true
+        self.manager.deviceMotionUpdateInterval = 10.0 / 60.0
         self.manager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: self.queue) { [self] data, error in
             if let error = error {
                 logger.error("\(error.localizedDescription)")
@@ -77,18 +89,24 @@ class MotionKit: ObservableObject {
             }
             if let motionData = data {
                 computeUserAcceleration(motionData.userAcceleration)
-
-                guard let rawAcceleration = self.manager.accelerometerData?.acceleration else {
-                    logger.error("Cannot get raw acceleration data this way.")
-                    return
+                
+//                guard let rawAcceleration = self.manager.accelerometerData?.acceleration else {
+//                    logger.error("Cannot get raw acceleration data this way.")
+//                    return
+//                }
+                if let rawAcceleration = self.manager.accelerometerData?.acceleration {
+                    computeXYCoordinate(raw: rawAcceleration, user: motionData.userAcceleration)
+                } else {
+                    logger.error("Could not get raw accelerometer data")
                 }
-                computeXYCoordinate(raw: rawAcceleration, user: motionData.userAcceleration)
                 calculateMaximumUserYAccl(motionData.userAcceleration)
             }
         }
         
         logger.info("Starting calculating raw accelerometer data.")
+        self.manager.accelerometerUpdateInterval = 1.0 / 60.0
         self.manager.startAccelerometerUpdates(to: self.queue) { data, error in
+            self.rawAcceleration = data?.acceleration
             if let rawData = data {
                 self.computeRawAcceleration(rawData.acceleration)
                 self.calculateMaximumRawYAccl(rawData.acceleration)
@@ -121,6 +139,9 @@ class MotionKit: ObservableObject {
             if self.x > self.max_pos_user_accl_y {
                 self.max_pos_user_accl_y = self.x
             }
+            
+            self.buffer_user_x.append(element: accelerationData.x)
+            self.buffer_user_y.append(element: accelerationData.y)
         }
     }
     
@@ -129,6 +150,9 @@ class MotionKit: ObservableObject {
             self.raw_accl_x = accelerationData.x
             self.raw_accl_y = accelerationData.y
             self.raw_accl_z = accelerationData.z
+            
+            self.buffer_raw_x.append(element: accelerationData.x)
+            self.buffer_raw_y.append(element: accelerationData.y)
         }
     }
     
@@ -143,9 +167,28 @@ class MotionKit: ObservableObject {
     // MARK: computeXYCoordinate
     private func computeXYCoordinate(raw rawAccelerationData: CMAcceleration, user userAccelerationData: CMAcceleration) {
         dispatchQueue.async { [self] in
-            if rawAccelerationData.y.sign == userAccelerationData.y.sign {
-                self.y += Int(userAccelerationData.y * 100)
+//            if Int(rawAccelerationData.y * 100).signum() == Int(userAccelerationData.y * 100).signum() {
+//                y += Int(userAccelerationData.y * 100)
+//            }
+            
+//            if !didInitialDecelerationFinish {
+//                y += abs(Int(userAccelerationData.x * 100))
+//            }
+            
+//            if buffer_user_y.isIncreasing {
+//                didInitialDecelerationFinish = true
+//            }
+//
+//            if buffer_user_y.isDecreasing {
+//                didInitialDecelerationFinish = false
+//            }
+            
+            if buffer_user_y.isDecreasing && userAccelerationData.y < 0 {
+                y += abs(Int(userAccelerationData.y * 10))
+                return
             }
+            
+            y += Int(userAccelerationData.y * 10)
         }
     }
     
