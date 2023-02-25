@@ -43,7 +43,7 @@ struct NetworkSettingsView: View {
                         }
                     }
                 } footer: {
-                    Text(network.networkConnectionMode == .clientSlave ? "Your device will now send data to the server when it receives a request to do so." : "Data will periodically be sent to the server, regardless if the server is ready to handle data.")
+                    Text(network.networkConnectionMode == .clientSlaveSync ? "Your device will now send data to the server when it receives a request to do so." : "Data will periodically be sent to the server, regardless if the server is ready to handle data.")
                 }
                 
                 Section {
@@ -77,8 +77,12 @@ struct NetworkSettingsView: View {
 }
 
 enum NetworkConnectionMode: String, Hashable, CaseIterable {
+    /// Data transmission protocol where the device initiates sending data to the server at set intervals.
     case clientMaster = "Client Master"
-    case clientSlave = "Client Slave"
+    /// Data transmission protocol where the server requests data at set intervals asynchronously.
+    case clientSlaveAsync = "Client Slave Async"
+    /// Data transmission protocol where the device sends the data synchronously when the server requests for it.
+    case clientSlaveSync = "Client Sync Sync"
 }
 
 @available(*, unavailable)

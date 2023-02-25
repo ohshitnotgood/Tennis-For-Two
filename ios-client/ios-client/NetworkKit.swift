@@ -12,14 +12,14 @@ import Combine
 /// Handles sending and receiving websocket data in this project.
 class NetworkKit: NSObject, ObservableObject {
     private let logger = Logger(label: Logger.TAG_WS)
-    private let queue = DispatchQueue(label: DispatchQueue.NETWORK_SOCKET, qos: .background)
     private var expectedHandshakeResponse = ""
+    private var socket: URLSessionWebSocketTask? = nil
+    private var didSendInitialDataPullRequest = false
     
-    var socket: URLSessionWebSocketTask? = nil
-    
+    @Published var shouldContinueListeningForNewData = false
     @Published var socketHasBeenEstablished = false
     @Published var socketServerAddress = "192.168.0.101:8080"
-    @Published var networkConnectionMode: NetworkConnectionMode = .clientSlave
+    @Published var networkConnectionMode: NetworkConnectionMode = .clientSlaveSync
     
     /// Attempts to connect to a WebSocket server using the provided `ws` address.
     ///
@@ -48,17 +48,21 @@ class NetworkKit: NSObject, ObservableObject {
     private func doInitialHandshake() async throws {
         switch networkConnectionMode {
             case .clientMaster:
-                self.expectedHandshakeResponse = "handshake-acknowledged__client-master"
+                self.expectedHandshakeResponse = NetworkKit.InitialHandshake.acknowledgementClientMaster.rawValue
                 logger.info("Sending client-master handshake request.")
-                try await socket?.send(URLSessionWebSocketTask.Message.string("initial-handshake__client-master"))
-            case .clientSlave:
-                self.expectedHandshakeResponse = "handshake-acknowledged__client-slave"
-                logger.info("Sending client-slave handshake request.")
-                try await socket?.send(URLSessionWebSocketTask.Message.string("initial-handshake__client-slave"))
+                try await socket?.send(URLSessionWebSocketTask.Message.string(NetworkKit.InitialHandshake.clientMaster.rawValue))
+            case .clientSlaveSync:
+                self.expectedHandshakeResponse = NetworkKit.InitialHandshake.acknowledgementClientSlaveSync.rawValue
+                logger.info("Sending client-slave-sync handshake request.")
+                try await socket?.send(URLSessionWebSocketTask.Message.string(NetworkKit.InitialHandshake.clientSlaveSync.rawValue))
+            case .clientSlaveAsync:
+                self.expectedHandshakeResponse = NetworkKit.InitialHandshake.acknowledgementClientSlaveAsync.rawValue
+                logger.info("Sending client-slave-async handshake request.")
+                try await socket?.send(URLSessionWebSocketTask.Message.string(NetworkKit.InitialHandshake.clientSlaveAsync.rawValue))
         }
         
         logger.info("Awaiting response")
-        let response = try await self.startListening()
+        let response = try await self.getServerResponse()
         
         guard let response = response else {
             logger.info("Failed to get a response")
@@ -83,6 +87,7 @@ class NetworkKit: NSObject, ObservableObject {
     @discardableResult
     func sendMessage(_ message: String) async throws -> String? {
         if !self.socketHasBeenEstablished {
+            logger.error("Socket has not been established")
             throw ConnectionFailedError.SocketNotEstablished
         }
         
@@ -91,20 +96,16 @@ class NetworkKit: NSObject, ObservableObject {
         try await socket?.send(message)
         logger.info("Sent message to server.")
         
-        return try await self.startListening()
+        return try await self.getServerResponse()
     }
     
     
-    /// Starts listening for incoming data from the server in the background.
+    /// Waits for a response from a server.
     ///
-    /// Will throw error if device is not connected to any server. Use ``connectToBoard(_:)`` first before calling this function.
-    ///
-    /// It is **not** required to call this function inside a `Task` block or inside an `async`function as it already launches a `DispatchQueue` with label `background-socket`.
+    /// Returns `nil` if the response received is not a `String`.
     @discardableResult
-    func startListening() async throws -> String? {
-        let response = try await self.socket?.receive()
-        
-        switch response {
+    private func getServerResponse() async throws -> String? {
+        switch try await self.socket?.receive() {
             case .string(let string):
                 return string
             case .data(_):
@@ -117,6 +118,60 @@ class NetworkKit: NSObject, ObservableObject {
                 logger.error("Received unparsable data as response.")
                 throw ConnectionFailedError.UnparsableResponseData
         }
+    }
+    
+    func startListeningSync() async throws {
+        if networkConnectionMode != .clientSlaveSync {
+            throw ConnectionFailedError.HandshakeFailed
+        }
+        
+        if !socketHasBeenEstablished {
+            throw ConnectionFailedError.SocketNotEstablished
+        }
+        
+        logger.info("Starting listening via client-slave-sync protocol.")
+        logger.info("Resuming socket")
+        socket?.resume()
+        
+        if !didSendInitialDataPullRequest {
+            try await socket?.send(URLSessionWebSocketTask.Message.string(NetworkKit.TransmissionRequest.initClientSlaveSync.rawValue))
+        }
+        
+        
+        guard let response = try await getServerResponse() else {
+            // TODO: Put correct error here
+            logger.error("Failed to get request from server.")
+            throw ConnectionFailedError.UnparsableResponseData
+        }
+        
+        logger.info("Received possible data pull request from the server.")
+        
+        if response == NetworkKit.ClientSlaveSyncProtocolMessage.dataRequestFromServer.rawValue {
+            logger.info("Received data pull request from the server.")
+            try await socket?.send(URLSessionWebSocketTask.Message.string("response"))
+            logger.info("Responded to data pull request from the server.")
+        }
+        
+        if shouldContinueListeningForNewData {
+            try await startListeningSync()
+        }
+    }
+    
+    func stopListeningSync() async throws {
+        try await socket?.send(URLSessionWebSocketTask.Message.string(NetworkKit.TransmissionRequest.killClientSlaveSync.rawValue))
+        DispatchQueue.main.async {
+            self.shouldContinueListeningForNewData = false
+        }
+    }
+    
+    func startListeningAsync() throws {
+        if networkConnectionMode != .clientSlaveSync {
+            throw ConnectionFailedError.HandshakeFailed
+        }
+    }
+    
+    func startBroadcasting() {
+        
     }
     
 }

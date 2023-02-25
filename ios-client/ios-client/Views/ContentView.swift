@@ -9,16 +9,21 @@
 //
 
 import SwiftUI
+import Logging
 
 /// Main entry point view of the app.
 struct ContentView: View {
     @State private var showNetworkSettingsSheet     = false
     @State private var showFeatureNotImplemented    = false
     
+    @FocusState private var fieldHasFocus: Bool
+    
     @State private var serverMessage                = ""
     @State private var anyErrorAlertMessage         = ""
     @State private var showAnyErrorAlert            = false
     @State private var serverResponse               = ""
+    
+    private let logger = Logger(label: Logger.TAG_CONTENT_VEIW)
     
     @ObservedObject private var session = NetworkKit()
     @ObservedObject private var motion = MotionKit()
@@ -39,27 +44,20 @@ struct ContentView: View {
                     Text("Accelerometer Data")
                 }
                 
-                
-//                Section {
-//                    Button("Open Network Settings") {
-//                        showNetworkSettingsSheet.toggle()
-//                    }
-//
-//                } header: {
-//                    Text("Network")
-//                }
-                
                 Section {
                     HStack {
                         Text("ws")
                         TextField("", text: $session.socketServerAddress)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.trailing)
-                            .keyboardType(.decimalPad)
                             .autocorrectionDisabled()
                             .textCase(.lowercase)
-                            .introspectTextField { tf in
-                                tf.becomeFirstResponder()
+                            .focused($fieldHasFocus)
+                            .truncationMode(.head)
+                            .scrollDismissesKeyboard(ScrollDismissesKeyboardMode.interactively)
+                            .submitLabel(SubmitLabel.go)
+                            .onSubmit {
+                                fieldHasFocus = false
                             }
                     }
                     
@@ -67,47 +65,86 @@ struct ContentView: View {
                         ForEach(NetworkConnectionMode.allCases, id: \.self) {
                             Text($0.rawValue).tag(0)
                         }
+                    }.onChange(of: session.networkConnectionMode) { _ in
+                        logger.info("ConnectionMode picker changed.")
                     }
                     
-                    Button("Connect") {
+                    Button(session.socketHasBeenEstablished ? "Reonnect" : "Connect") {
+                        logger.info("Connect/Reconnect button clicked.")
                         Task {
                             try await session.connectToServer()
                         }
                     }
                     
-                    Button("Disconnect") {
+                    if session.socketHasBeenEstablished {
+                        Button("Disconnect") {
+                            logger.info("Disconnect button clicked.")
+                        }
                         
-                    }
-                } header: {
-                    Text("Socket")
-                }
-                
-                Section {
-                    HStack {
-                        TextField("Send message", text: $serverMessage)
-                        Button {
-                            Task {
-                                do {
-                                    serverResponse = try await session.sendMessage(serverMessage) ?? "error"
-                                    serverMessage = ""
-                                } catch {
-                                    showErrorAlert(error.localizedDescription)
+                        if session.networkConnectionMode == .clientSlaveSync {
+                            Button("Start Listening") {
+                                Task {
+                                    logger.info("StartListening button clicked.")
+//                                    session.shouldContinueListeningForNewData = true
+                                    do {
+                                        try await session.startListeningSync()
+                                    } catch {
+                                        logger.error("Caught error in the listener button")
+                                    }
                                 }
                             }
-                        } label: {
-                            Image(systemName: "paperplane.circle.fill")
                         }
-                        .buttonBorderShape(.capsule)
-                        .buttonStyle(.borderedProminent)
+                        
+                        Button("Stop Listening") {
+                            Task {
+                                logger.info("StopListening button clicked")
+                                try await session.stopListeningSync()
+                            }
+                        }
+                        
+                        if session.networkConnectionMode == .clientMaster {
+                            Button("Start Broadcasting") {
+                                logger.info("StartBoardcasting button clicked.")
+                            }
+                        }
                     }
+                } header: {
+                    Text("Socket Configuration")
                 }
                 
-                Section {
-                    Text(serverResponse)
-                        .monospaced()
-                } header: {
-                    Text("Server Response")
-                        
+                if session.socketHasBeenEstablished {
+                    withAnimation {
+                        Section {
+                            HStack {
+                                TextField("Send message", text: $serverMessage)
+                                Button {
+                                    logger.info("SendMessage button clicked.")
+                                    Task {
+                                        do {
+                                            serverResponse = try await session.sendMessage(serverMessage) ?? "error"
+                                            serverMessage = ""
+                                        } catch {
+                                            showErrorAlert(error.localizedDescription)
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "paperplane.circle.fill")
+                                }
+                                .buttonBorderShape(.capsule)
+                                .buttonStyle(.borderedProminent)
+                            }
+                        }
+                    }
+                    
+                    withAnimation {
+                        Section {
+                            Text(serverResponse)
+                                .monospaced()
+                        } header: {
+                            Text("Server Response")
+                            
+                        }
+                    }
                 }
             }
             .toolbar {
@@ -144,10 +181,12 @@ struct ContentView: View {
             })
             // MARK: onAppear
             .onAppear {
+                logger.info("Initialising ContentView()")
                 do {
+                    logger.info("Starting pulling data from the sensors.")
                     try motion.startUpdatingCoordinates()
                 } catch {
-                    print(error.localizedDescription)
+                    logger.error("\(error.localizedDescription)")
                 }
             }
             .navigationTitle("App Debug")
