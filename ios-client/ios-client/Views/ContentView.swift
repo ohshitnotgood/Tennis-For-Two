@@ -35,10 +35,8 @@ struct ContentView: View {
                     HStack {
                         Text("x_ax\ny_ax\nz_ax")
                         Spacer()
-                        VStack {
-                            Text("\(motion.accl_x)\n\(motion.accl_y)\n\(motion.accl_z)")
-                                .foregroundStyle(.secondary)
-                        }
+                        Text("\(motion.user_accl_x)\n\(motion.user_accl_y)\n\(motion.user_accl_z)")
+                            .foregroundStyle(.secondary)
                     }.monospaced()
                 } header: {
                     Text("Accelerometer Data")

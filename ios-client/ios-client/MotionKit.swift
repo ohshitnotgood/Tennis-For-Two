@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreMotion
+import Logging
 
 
 /// `MotionKit` class is responsible for retrieving, storing and processing sensor data in this project.
@@ -16,13 +17,17 @@ import CoreMotion
 class MotionKit: ObservableObject {
     
     // MARK: Published variables
-    @Published var accl_x   = 0.0
-    @Published var accl_y   = 0.0
-    @Published var accl_z   = 0.0
+    @Published var user_accl_x   = 0.0
+    @Published var user_accl_y   = 0.0
+    @Published var user_accl_z   = 0.0
     
-    @Published var tilt_x   = 0
-    @Published var tilt_y   = 0
-    @Published var tilt_z   = 0
+    @Published var raw_accl_x    = 0.0
+    @Published var raw_accl_y    = 0.0
+    @Published var raw_accl_z    = 0.0
+    
+    @Published var tilt_x        = 0
+    @Published var tilt_y        = 0
+    @Published var tilt_z        = 0
     
     @Published var x = 0 {
         didSet {
@@ -39,49 +44,58 @@ class MotionKit: ObservableObject {
     
     @Published var speed    = 0
     
-    @Published var maxPositiveXAccelerationDetected = 0
-    @Published var maxNegativeXAccelerationDetected = 0
+    @Published var max_pos_user_accl_y = -10000000
+    @Published var max_neg_user_accl_y =  10000000
     
-    private var xSpeed = 0
-    private var ySpeed = 0
-    
-    private var xSmooth = 0
-    private var ySmooth = 0
-    
-    private var bufferX: [Int] = [0, 0, 0, 0, 0]
-    private var bufferY: [Int] = [0, 0, 0, 0, 0]
-    
-    private var global_i = 0
-    
+    @Published var max_pos_raw_accl_y  = -10000000
+    @Published var max_neg_raw_accl_y  =  10000000
     
     private var queue       = OperationQueue()
     private var manager     = CMMotionManager()
+    private var logger      = Logger(label: Logger.TAG_MOTION_KIT)
     
     private let dispatchQueue = DispatchQueue.main
     
     /// Starts updating values in ``latestCoordinate``.
     func startUpdatingCoordinates() throws {
         if !manager.isAccelerometerAvailable {
+            logger.error("Accelerometer not available.")
             throw AccelerometerNotAvailableError()
         }
         
         if !manager.isGyroAvailable {
+            logger.error("Gyroscope is not available.")
             throw GyroNotAvailableError()
         }
         
-        print("Begin updating accelerometer")
+        logger.info("Starting fetching accelerometer data")
         self.manager.deviceMotionUpdateInterval = 1.0 / 60.0
         self.manager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: self.queue) { [self] data, error in
             if let error = error {
-                print(error.localizedDescription)
+                logger.error("\(error.localizedDescription)")
                 return
             }
-            if let validData = data {
-                computeAcceleration(validData.userAcceleration)
-                computeXYCoordinate(validData.userAcceleration)
+            if let motionData = data {
+                computeUserAcceleration(motionData.userAcceleration)
+
+                guard let rawAcceleration = self.manager.accelerometerData?.acceleration else {
+                    logger.error("Cannot get raw acceleration data this way.")
+                    return
+                }
+                computeXYCoordinate(raw: rawAcceleration, user: motionData.userAcceleration)
+                calculateMaximumUserYAccl(motionData.userAcceleration)
             }
         }
         
+        logger.info("Starting calculating raw accelerometer data.")
+        self.manager.startAccelerometerUpdates(to: self.queue) { data, error in
+            if let rawData = data {
+                self.computeRawAcceleration(rawData.acceleration)
+                self.calculateMaximumRawYAccl(rawData.acceleration)
+            }
+        }
+
+        logger.info("Starting gyroscope update")
         self.manager.startGyroUpdates(to: self.queue) { [self] data, error in
             if let data = data {
                 computeTilt(data)
@@ -91,17 +105,30 @@ class MotionKit: ObservableObject {
     
     /// Ends updating values in ``latestCoordinate``.
     func endUpdatingCoordinates() {
+        logger.info("Stopping updating coordinate.")
         self.manager.stopAccelerometerUpdates()
         self.manager.stopDeviceMotionUpdates()
         self.manager.stopGyroUpdates()
     }
     
     // MARK: Sensor Data Comp Funcs
-    private func computeAcceleration(_ accelerationData: CMAcceleration) {
+    private func computeUserAcceleration(_ accelerationData: CMAcceleration) {
         dispatchQueue.async {
-            self.accl_x = accelerationData.x
-            self.accl_y = accelerationData.y
-            self.accl_z = accelerationData.z
+            self.user_accl_x = accelerationData.x
+            self.user_accl_y = accelerationData.y
+            self.user_accl_z = accelerationData.z
+            
+            if self.x > self.max_pos_user_accl_y {
+                self.max_pos_user_accl_y = self.x
+            }
+        }
+    }
+    
+    private func computeRawAcceleration(_ accelerationData: CMAcceleration) {
+        dispatchQueue.async {
+            self.raw_accl_x = accelerationData.x
+            self.raw_accl_y = accelerationData.y
+            self.raw_accl_z = accelerationData.z
         }
     }
     
@@ -114,14 +141,35 @@ class MotionKit: ObservableObject {
     }
     
     // MARK: computeXYCoordinate
-    private func computeXYCoordinate(_ accelerationData: CMAcceleration) {
+    private func computeXYCoordinate(raw rawAccelerationData: CMAcceleration, user userAccelerationData: CMAcceleration) {
         dispatchQueue.async { [self] in
-            
+            if rawAccelerationData.y.sign == userAccelerationData.y.sign {
+                self.y += Int(userAccelerationData.y * 100)
+            }
         }
     }
     
-    // MARK: getCalibratedCoordinates
-    private func getCalibratedCoordinate(_ accData: Double) -> Double {
-        return 0
+    private func calculateMaximumUserYAccl(_ accelerationData: CMAcceleration) {
+        dispatchQueue.async {
+            if Int(accelerationData.y * 100) > self.max_pos_user_accl_y {
+                self.max_pos_user_accl_y = Int(accelerationData.y * 100)
+            }
+            
+            if Int(accelerationData.y * 100) < self.max_neg_user_accl_y {
+                self.max_neg_user_accl_y = Int(accelerationData.y * 100)
+            }
+        }
+    }
+    
+    private func calculateMaximumRawYAccl(_ accelerationData: CMAcceleration) {
+        dispatchQueue.async {
+            if Int(accelerationData.y * 100) > self.max_pos_user_accl_y {
+                self.max_pos_raw_accl_y = Int(accelerationData.y * 100)
+            }
+            
+            if Int(accelerationData.y * 100) < self.max_neg_user_accl_y {
+                self.max_neg_raw_accl_y = Int(accelerationData.y * 100)
+            }
+        }
     }
 }

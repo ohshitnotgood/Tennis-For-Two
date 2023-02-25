@@ -13,7 +13,7 @@ struct ios_clientApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SensorDebugView()
                 .environmentObject(settings)
         }
     }

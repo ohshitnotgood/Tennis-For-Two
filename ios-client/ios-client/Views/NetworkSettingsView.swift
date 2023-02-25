@@ -76,15 +76,6 @@ struct NetworkSettingsView: View {
     }
 }
 
-enum NetworkConnectionMode: String, Hashable, CaseIterable {
-    /// Data transmission protocol where the device initiates sending data to the server at set intervals.
-    case clientMaster = "Client Master"
-    /// Data transmission protocol where the server requests data at set intervals asynchronously.
-    case clientSlaveAsync = "Client Slave Async"
-    /// Data transmission protocol where the device sends the data synchronously when the server requests for it.
-    case clientSlaveSync = "Client Sync Sync"
-}
-
 @available(*, unavailable)
 struct NetworkSettingsView_Previews: PreviewProvider {
     static var previews: some View {
