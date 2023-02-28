@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.neovisionaries.ws.client.WebSocket
 import se.kth.is1200.android_client.R.*
 
 class MainActivity : AppCompatActivity() {
@@ -38,12 +39,14 @@ class MainActivity : AppCompatActivity() {
         val ipAddress: EditText = findViewById(id.port_address)
         val initialiseLoop: Button = findViewById(id.send_message)
 
+        var socket: WebSocket? = null
+
         connectButton.setOnClickListener {
-            NetworkKit().connectToServer(ipAddress.text.toString())
+            socket = NetworkKit().connectToServer(ipAddress.text.toString())
         }
 
         initialiseLoop.setOnClickListener {
-            NetworkKit().startListening()
+            NetworkKit().sendMessage(socket!!)
         }
     }
 
