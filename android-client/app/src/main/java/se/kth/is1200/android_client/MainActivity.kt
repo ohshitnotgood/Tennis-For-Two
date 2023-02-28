@@ -39,13 +39,14 @@ class MainActivity : AppCompatActivity() {
         val ipAddress: EditText = findViewById(id.port_address)
         val initialiseLoop: Button = findViewById(id.send_message)
 
-        var socket: WebSocket? = null
+        var socket: WebSocket?
 
         connectButton.setOnClickListener {
             socket = NetworkKit().connectToServer(ipAddress.text.toString())
         }
 
         initialiseLoop.setOnClickListener {
+            socket = NetworkKit().connectToServer(ipAddress.text.toString())
             NetworkKit().sendMessage(socket!!)
         }
     }

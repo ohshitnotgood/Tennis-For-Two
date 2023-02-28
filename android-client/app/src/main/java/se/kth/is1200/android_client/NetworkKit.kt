@@ -98,6 +98,7 @@ class NetworkKit {
 
     fun sendMessage(socket: WebSocket) {
         try {
+            logger.info("Sending message to the server")
             socket.sendText("0x001")
         } catch (e: Exception) {
             logger.warning("Failed to send data to the server because of exception: ${e.message}")

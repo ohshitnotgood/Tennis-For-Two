@@ -262,6 +262,7 @@
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -271,7 +272,30 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:text="Initialise loop"
+                android:text="Initialise Handshake"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/init_handshake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:text="Initialise"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="Start transmission"
                 android:textColor="@color/black"
                 tools:ignore="HardcodedText" />
 
@@ -281,7 +305,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:text="Initialise loop"
+                android:text="Begin"
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
 
