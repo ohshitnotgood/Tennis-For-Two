@@ -41,6 +41,11 @@ class MainActivity : AppCompatActivity() {
         val startListening: Button = findViewById(id.start_listening)
         val stopListening: Button = findViewById(id.stop_listening)
 
+        val levelOneButton: Button = findViewById(id.level_one_button)
+        val levelTwoButton: Button = findViewById(id.level_two_button)
+        val levelThreeButton: Button = findViewById(id.level_three_button)
+        val levelFourButton: Button = findViewById(id.level_four_button)
+
         connectButton.setOnClickListener {
             networkKit = NetworkKit(ipAddress.text.toString())
             networkKit.connectToServer()
@@ -56,6 +61,22 @@ class MainActivity : AppCompatActivity() {
 
         stopListening.setOnClickListener {
             networkKit.stopListening()
+        }
+
+        levelOneButton.setOnClickListener {
+            TapticKit.generateTapticFeedback(this.applicationContext, TapticKit.TapticGeneratorLevel.LEVEL_ONE)
+        }
+
+        levelTwoButton.setOnClickListener {
+            TapticKit.generateTapticFeedback(this.applicationContext, TapticKit.TapticGeneratorLevel.LEVEL_TWO)
+        }
+
+        levelThreeButton.setOnClickListener {
+            TapticKit.generateTapticFeedback(this.applicationContext, TapticKit.TapticGeneratorLevel.LEVEL_THREE)
+        }
+
+        levelFourButton.setOnClickListener {
+            TapticKit.generateTapticFeedback(this.applicationContext, TapticKit.TapticGeneratorLevel.LEVEL_FOUR)
         }
     }
 
