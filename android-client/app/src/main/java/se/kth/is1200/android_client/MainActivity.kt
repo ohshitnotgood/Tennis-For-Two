@@ -36,9 +36,14 @@ class MainActivity : AppCompatActivity() {
 
         val connectButton: Button = findViewById(id.connect_button)
         val ipAddress: EditText = findViewById(id.port_address)
+        val initialiseLoop: Button = findViewById(id.send_message)
 
         connectButton.setOnClickListener {
             NetworkKit().connectToServer(ipAddress.text.toString())
+        }
+
+        initialiseLoop.setOnClickListener {
+            NetworkKit().startListening()
         }
     }
 
