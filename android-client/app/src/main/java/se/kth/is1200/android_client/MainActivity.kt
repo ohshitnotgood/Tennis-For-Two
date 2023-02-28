@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
      */
     private var accYPC = 0
 
+    private lateinit var viewModel: MainActivityViewModelFactory
+
     private lateinit var networkKit: NetworkKit
     // If you want to do something immediately after the app launches, write it in here.
     // Look up Android Activity Life Cycle if you want other events like onPause, onResume, etc.
@@ -47,8 +49,7 @@ class MainActivity : AppCompatActivity() {
         val levelFourButton: Button = findViewById(id.level_four_button)
 
         connectButton.setOnClickListener {
-            networkKit = NetworkKit(ipAddress.text.toString())
-            networkKit.connectToServer()
+            viewModel = MainActivityViewModelFactory(ipAddress.text.toString())
         }
 
         initialise.setOnClickListener {

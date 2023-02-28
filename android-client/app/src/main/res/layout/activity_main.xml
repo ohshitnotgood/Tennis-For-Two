@@ -6,431 +6,436 @@
     android:paddingHorizontal="30dp"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Coordinates Preview"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/black"/>
-
-        <RelativeLayout
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10sp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Xpc, Ypc"
-                android:layout_alignParentStart="true"
+                android:text="Coordinates Preview"
+                android:textSize="17sp"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/black"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xpc, Ypc"
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/xpc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/ypc"
+                    android:paddingEnd="2dp"
+                    android:fontFamily="monospace"
+                    android:text="(0"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/ypc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text=", 0)"
+                    android:fontFamily="monospace"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
             <TextView
-                android:id="@+id/xpc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/ypc"
-                android:paddingEnd="2dp"
-                android:fontFamily="monospace"
-                android:text="(0"
-                tools:ignore="HardcodedText,RtlSymmetry" />
-
-            <TextView
-                android:id="@+id/ypc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text=", 0)"
-                android:fontFamily="monospace"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Accelerometer Data"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/black"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10sp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x"
-                android:layout_alignParentStart="true"
+                android:text="Accelerometer Data"
+                android:textSize="17sp"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/black"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="x"
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/acc_d_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="(0, 0)"
+                    android:fontFamily="monospace"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="y"
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/acc_d_y"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="(0, 0)"
+                    android:fontFamily="monospace"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="z"
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/acc_d_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="(0, 0)"
+                    android:fontFamily="monospace"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
             <TextView
-                android:id="@+id/acc_d_x"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="(0, 0)"
-                android:fontFamily="monospace"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10sp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="y"
-                android:layout_alignParentStart="true"
+                android:text="Gyroscope Data"
+                android:textSize="17sp"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/black"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="x"
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/gyro_x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="(0, 0)"
+                    android:fontFamily="monospace"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="y"
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/gyro_y"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="(0, 0)"
+                    android:fontFamily="monospace"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="z"
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/gyro_z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="(0, 0)"
+                    android:fontFamily="monospace"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+
             <TextView
-                android:id="@+id/acc_d_y"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="(0, 0)"
-                android:fontFamily="monospace"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10sp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="z"
-                android:layout_alignParentStart="true"
+                android:text="Network Settings"
+                android:textSize="17sp"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/black"/>
 
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Board IP Address"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/port_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:inputType="text"
+                    android:text="ws://192.168.1.111:8080"
+                    tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Connect to Server"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/connect_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Connect"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Initialise Handshake"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/init_handshake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Initialise"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Start transmission"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/start_listening"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Begin"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Stop listening"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/stop_listening"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Stop"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+
             <TextView
-                android:id="@+id/acc_d_z"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="(0, 0)"
-                android:fontFamily="monospace"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gyroscope Data"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/black"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x"
-                android:layout_alignParentStart="true"
+                android:text="Haptic Button Testers"
+                android:textSize="17sp"
                 tools:ignore="HardcodedText"
                 android:textColor="@color/black"/>
 
-            <TextView
-                android:id="@+id/gyro_x"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="(0, 0)"
-                android:fontFamily="monospace"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Level One"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="y"
-                android:layout_alignParentStart="true"
-                tools:ignore="HardcodedText"
-                android:textColor="@color/black"/>
+                <Button
+                    android:id="@+id/level_one_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Click"
+                    tools:ignore="HardcodedText" />
 
-            <TextView
-                android:id="@+id/gyro_y"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="(0, 0)"
-                android:fontFamily="monospace"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="z"
-                android:layout_alignParentStart="true"
-                tools:ignore="HardcodedText"
-                android:textColor="@color/black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Level Two"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
 
-            <TextView
-                android:id="@+id/gyro_z"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="(0, 0)"
-                android:fontFamily="monospace"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
+                <Button
+                    android:id="@+id/level_two_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Click"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Network Settings"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Level One"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
 
+                <Button
+                    android:id="@+id/level_three_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Click"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Level One"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Board IP Address"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <EditText
-                android:id="@+id/port_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:inputType="text"
-                android:text="ws://192.168.1.111:8080"
-                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Connect to Server"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/connect_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Connect"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Initialise Handshake"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/init_handshake"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Initialise"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Start transmission"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/start_listening"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Begin"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Stop listening"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/stop_listening"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Stop"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Haptic Button Testers"
-            android:textSize="17sp"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/black"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Level One"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/level_one_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Click"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Level Two"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/level_two_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Click"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Level One"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/level_three_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Click"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:text="Level One"
-                android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
-
-            <Button
-                android:id="@+id/level_four_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:text="Click"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-    </LinearLayout>
+                <Button
+                    android:id="@+id/level_four_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:text="Click"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </ScrollView>
