@@ -5,7 +5,10 @@ import android.content.Context
 import android.hardware.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import se.kth.is1200.android_client.R.*
 
 class MainActivity : AppCompatActivity() {
     /**
@@ -26,10 +29,17 @@ class MainActivity : AppCompatActivity() {
     // Look up Android Activity Life Cycle if you want other events like onPause, onResume, etc.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(layout.activity_main)
 
         publishAccelerometerData()
         publishGyroscopeData()
+
+        val connectButton: Button = findViewById(id.connect_button)
+        val ipAddress: EditText = findViewById(id.port_address)
+
+        connectButton.setOnClickListener {
+            NetworkKit().connectToServer(ipAddress.text.toString())
+        }
     }
 
     /**
@@ -57,15 +67,15 @@ class MainActivity : AppCompatActivity() {
                 // defined in the activity_main.xml file.
                 //
                 // p0.values has the latest data from the sensor.
-                val accXTV: TextView = findViewById(R.id.acc_d_x)
+                val accXTV: TextView = findViewById(id.acc_d_x)
                 accXTV.text = p0!!.values[0].toString()
 
                 // Same shit, different axis.
-                val accYTV: TextView = findViewById(R.id.acc_d_y)
+                val accYTV: TextView = findViewById(id.acc_d_y)
                 accYTV.text = p0.values[1].toString()
 
                 // Same shit, different axis.
-                val accZTV: TextView = findViewById(R.id.acc_d_z)
+                val accZTV: TextView = findViewById(id.acc_d_z)
                 accZTV.text = p0.values[2].toString()
 
                 // This function is where you actually need to work on.
@@ -91,8 +101,8 @@ class MainActivity : AppCompatActivity() {
      */
     @SuppressLint("SetTextI18n")
     private fun publishCoordinateData(accX: Float, accY: Float) {
-        val xpc: TextView = findViewById(R.id.xpc)
-        val ypx:TextView = findViewById(R.id.ypc)
+        val xpc: TextView = findViewById(id.xpc)
+        val ypx:TextView = findViewById(id.ypc)
 
         /* You do your work here */
 
@@ -117,13 +127,13 @@ class MainActivity : AppCompatActivity() {
 
         val gyroEventListener = object : SensorEventListener {
             override fun onSensorChanged(p0: SensorEvent?) {
-                val gyroXTV = findViewById<TextView>(R.id.gyro_x)
+                val gyroXTV = findViewById<TextView>(id.gyro_x)
                 gyroXTV.text = p0!!.values[0].toString()
 
-                val gyroYTV = findViewById<TextView>(R.id.gyro_y)
+                val gyroYTV = findViewById<TextView>(id.gyro_y)
                 gyroYTV.text = p0.values[1].toString()
 
-                val gyroZTV = findViewById<TextView>(R.id.gyro_z)
+                val gyroZTV = findViewById<TextView>(id.gyro_z)
                 gyroZTV.text = p0.values[2].toString()
             }
 
