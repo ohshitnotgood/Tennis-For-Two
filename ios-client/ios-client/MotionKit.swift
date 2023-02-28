@@ -25,9 +25,9 @@ class MotionKit: ObservableObject {
     @Published var raw_accl_y    = 0.0
     @Published var raw_accl_z    = 0.0
     
-    @Published var tilt_x        = 0
-    @Published var tilt_y        = 0
-    @Published var tilt_z        = 0
+    @Published var tilt_x        = 0.0
+    @Published var tilt_y        = 0.0
+    @Published var tilt_z        = 0.0
     
     @Published var x = 0 {
         didSet {
@@ -37,7 +37,7 @@ class MotionKit: ObservableObject {
     }
     @Published var y = 0 {
         didSet {
-            if self.y > 300 { self.y = 30 }
+            if self.y > 300 { self.y = 300 }
             if self.y < 0 { self.y = 0 }
         }
     }
@@ -65,6 +65,8 @@ class MotionKit: ObservableObject {
     private var buffer_raw_x: [Double] = []
     private var buffer_raw_y: [Double] = []
     
+    private var initialSpeed = 0.0
+    
     private var didInitialDecelerationFinish = false
     
     /// Starts updating values in ``latestCoordinate``.
@@ -81,42 +83,22 @@ class MotionKit: ObservableObject {
         
         logger.info("Starting fetching accelerometer data")
         self.manager.showsDeviceMovementDisplay = true
-        self.manager.deviceMotionUpdateInterval = 10.0 / 60.0
-        self.manager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: self.queue) { [self] data, error in
+        self.manager.deviceMotionUpdateInterval = 1.0 / 60.0
+        self.manager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: self.queue) { [self] data, error in
             if let error = error {
                 logger.error("\(error.localizedDescription)")
                 return
             }
             if let motionData = data {
                 computeUserAcceleration(motionData.userAcceleration)
-                
-//                guard let rawAcceleration = self.manager.accelerometerData?.acceleration else {
-//                    logger.error("Cannot get raw acceleration data this way.")
-//                    return
-//                }
-                if let rawAcceleration = self.manager.accelerometerData?.acceleration {
-                    computeXYCoordinate(raw: rawAcceleration, user: motionData.userAcceleration)
-                } else {
-                    logger.error("Could not get raw accelerometer data")
-                }
                 calculateMaximumUserYAccl(motionData.userAcceleration)
-            }
-        }
-        
-        logger.info("Starting calculating raw accelerometer data.")
-        self.manager.accelerometerUpdateInterval = 1.0 / 60.0
-        self.manager.startAccelerometerUpdates(to: self.queue) { data, error in
-            self.rawAcceleration = data?.acceleration
-            if let rawData = data {
-                self.computeRawAcceleration(rawData.acceleration)
-                self.calculateMaximumRawYAccl(rawData.acceleration)
-            }
-        }
-
-        logger.info("Starting gyroscope update")
-        self.manager.startGyroUpdates(to: self.queue) { [self] data, error in
-            if let data = data {
-                computeTilt(data)
+                dispatchQueue.async { [self] in
+                    tilt_x = motionData.attitude.pitch
+                    tilt_y = motionData.attitude.roll
+                    tilt_z = motionData.attitude.yaw
+                    
+                    computeXYCoordinate(motionData.attitude)
+                }
             }
         }
     }
@@ -158,37 +140,18 @@ class MotionKit: ObservableObject {
     
     private func computeTilt(_ tiltData: CMGyroData) {
         dispatchQueue.async {
-            self.tilt_x = Int(tiltData.rotationRate.x)
-            self.tilt_y = Int(tiltData.rotationRate.y)
-            self.tilt_z = Int(tiltData.rotationRate.z)
+            self.tilt_x = tiltData.rotationRate.x
+            self.tilt_y = tiltData.rotationRate.y
+            self.tilt_z = tiltData.rotationRate.z
         }
     }
     
     // MARK: computeXYCoordinate
-    private func computeXYCoordinate(raw rawAccelerationData: CMAcceleration, user userAccelerationData: CMAcceleration) {
+    /// Uses data from the gyroscope to calculate next coordinate of the user's racket.
+    private func computeXYCoordinate(_ attitude: CMAttitude) {
         dispatchQueue.async { [self] in
-//            if Int(rawAccelerationData.y * 100).signum() == Int(userAccelerationData.y * 100).signum() {
-//                y += Int(userAccelerationData.y * 100)
-//            }
-            
-//            if !didInitialDecelerationFinish {
-//                y += abs(Int(userAccelerationData.x * 100))
-//            }
-            
-//            if buffer_user_y.isIncreasing {
-//                didInitialDecelerationFinish = true
-//            }
-//
-//            if buffer_user_y.isDecreasing {
-//                didInitialDecelerationFinish = false
-//            }
-            
-            if buffer_user_y.isDecreasing && userAccelerationData.y < 0 {
-                y += abs(Int(userAccelerationData.y * 10))
-                return
-            }
-            
-            y += Int(userAccelerationData.y * 10)
+            x = Int(attitude.pitch * 10)
+            y = Int(attitude.roll * 10)
         }
     }
     
@@ -214,5 +177,11 @@ class MotionKit: ObservableObject {
                 self.max_neg_raw_accl_y = Int(accelerationData.y * 100)
             }
         }
+    }
+    
+    private func calculateDistanceInY(_ acceleration: CMAcceleration) -> Double {
+        let distance = initialSpeed * 1.0 / 60.0 + 0.5 * Double(Int(acceleration.y * 10)) * 9.81 * pow((1.0 / 60.0), 2)
+        initialSpeed = initialSpeed + Double(Int(acceleration.y * 10)) * 9.81 + (1.0 / 60.0)
+        return distance
     }
 }

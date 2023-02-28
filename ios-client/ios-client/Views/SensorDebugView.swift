@@ -103,12 +103,35 @@ struct SensorDebugView: View {
                 } header: {
                     Text("Rounded Raw Acceleration Data")
                 }
+                
+                Section {
+                    HStack {
+                        Text("x_ax\ny_ax\nz_ax")
+                        Spacer()
+                        Text("\(motion.tilt_x)\n\(motion.tilt_y)\n\(motion.tilt_z)")
+                    }
+                    
+                } header: {
+                    Text("Raw Gyroscope Data")
+                }
+                
+                Section {
+                    HStack {
+                        Text("x_ax\ny_ax\nz_ax")
+                        Spacer()
+                        Text("\(Int(motion.tilt_x * multiplierConst))\n\(Int(motion.tilt_y * multiplierConst))\n\(Int(motion.tilt_z * multiplierConst))")
+                            .monospaced()
+                            .multilineTextAlignment(.trailing)
+                    }
+                } header: {
+                    Text("Rounded Gyroscope Data")
+                }
             }.navigationTitle("Sensor Debugger")
                 .onAppear {
                     Task {
                         try motion.startUpdatingCoordinates()
                     }
-                }
+                }.listStyle(.sidebar)
         }
     }
 }

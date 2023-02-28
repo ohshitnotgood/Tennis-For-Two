@@ -10,7 +10,7 @@ import SwiftUI
 
 extension Double {
     func signOf() -> Int {
-        return self > 0 ? 1 : -1
+        return self > 0.0 ? 1 : -1
     }
     
     func signOf() -> Double {
@@ -67,7 +67,7 @@ extension DispatchQueue {
 }
 
 extension NetworkKit {
-    enum InitialHandshake: String {
+    enum InitialHandshake: String, CaseIterable {
         case clientSlaveSync                    = "0x001"
         case clientSlaveAsync                   = "0x002"
         case clientMaster                       = "0x003"
@@ -78,17 +78,23 @@ extension NetworkKit {
         case serverError                        = "0xFFB"
     }
     
-    enum TransmissionRequest: String {
+    enum TransmissionRequest: String, CaseIterable {
         case initClientSlaveSync                = "0x101"
         case initClientSlaveAsync               = "0x102"
         case initClientMaster                   = "0x103"
         case killClientSlaveSync                = "0x104"
         case killClientSlaveAsync               = "0x105"
         case killClientSlaveMaster              = "0x106"
+        
+        case waitingForPlayerOneToJoin          = "0x107"
     }
     
-    enum ClientSlaveSyncProtocolMessage: String {
+    enum ClientSlaveSyncProtocolMessage: String, CaseIterable {
         case dataRequestFromServer              = "0x200"
+        case dataRequestWithHapticLevelOne      = "0x201"
+        case dataRequestWithHapticLevelTwo      = "0x202"
+        case dataRequestWithHapticLevelThree    = "0x203"
+        case dataRequestWithHapticLevelFour     = "0x204"
     }
     
     enum ClientSlaveAsyncProtocolMessage: String {
@@ -97,5 +103,27 @@ extension NetworkKit {
     
     enum ClientMasterProtocolMessage: String {
         case dataSendToServer                   = "0x400"
+    }
+}
+extension String {
+    
+    /// **Acknowledgement**
+    ///
+    /// This extension was provided by: https://stackoverflow.com/a/46133083/13727105
+    subscript(_ range: CountableRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: max(0, range.lowerBound))
+        let end = index(start, offsetBy: min(self.count - range.lowerBound,
+                                             range.upperBound - range.lowerBound))
+        return String(self[start..<end])
+    }
+
+    
+    
+    /// **Acknowledgement**
+    ///
+    /// This extension was provided by: https://stackoverflow.com/a/46133083/13727105
+    subscript(_ range: CountablePartialRangeFrom<Int>) -> String {
+        let start = index(startIndex, offsetBy: max(0, range.lowerBound))
+         return String(self[start...])
     }
 }

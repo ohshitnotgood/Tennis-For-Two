@@ -16,6 +16,8 @@ class NetworkKit: NSObject, ObservableObject {
     private var socket: URLSessionWebSocketTask? = nil
     private var didSendInitialDataPullRequest = false
     
+    private var count = 0
+    
     @Published var shouldContinueListeningForNewData = false
     @Published var socketHasBeenEstablished = false
     @Published var socketServerAddress = "192.168.0.101:8080"
@@ -135,21 +137,32 @@ class NetworkKit: NSObject, ObservableObject {
         
         if !didSendInitialDataPullRequest {
             try await socket?.send(URLSessionWebSocketTask.Message.string(NetworkKit.TransmissionRequest.initClientSlaveSync.rawValue))
+            didSendInitialDataPullRequest = true
+            DispatchQueue.main.async {
+                self.shouldContinueListeningForNewData = true
+            }
         }
         
         
+        // Wait for response from the server.
         guard let response = try await getServerResponse() else {
-            // TODO: Put correct error here
             logger.error("Failed to get request from server.")
+            // TODO: Throw NetworkTimeout
             throw ConnectionFailedError.UnparsableResponseData
         }
         
         logger.info("Received possible data pull request from the server.")
         
-        if response == NetworkKit.ClientSlaveSyncProtocolMessage.dataRequestFromServer.rawValue {
+        
+        // Check if response is of level 2.
+        if response[2..<3] == "2" {
             logger.info("Received data pull request from the server.")
-            try await socket?.send(URLSessionWebSocketTask.Message.string("response"))
+            try await socket?.send(URLSessionWebSocketTask.Message.string("response_\(count)"))
             logger.info("Responded to data pull request from the server.")
+            count += 1;
+            
+            // Provide haptic feedback based on server response.
+            TaptikKit().provideHapticFeedbackFrom(serverResponse: response)
         }
         
         if shouldContinueListeningForNewData {
@@ -170,6 +183,7 @@ class NetworkKit: NSObject, ObservableObject {
         }
     }
     
+    @available(*, unavailable)
     func startBroadcasting() {
         
     }
