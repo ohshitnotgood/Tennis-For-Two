@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.neovisionaries.ws.client.WebSocket
 import se.kth.is1200.android_client.R.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
      */
     private var accYPC = 0
 
+    private lateinit var networkKit: NetworkKit
     // If you want to do something immediately after the app launches, write it in here.
     // Look up Android Activity Life Cycle if you want other events like onPause, onResume, etc.
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,17 +37,25 @@ class MainActivity : AppCompatActivity() {
 
         val connectButton: Button = findViewById(id.connect_button)
         val ipAddress: EditText = findViewById(id.port_address)
-        val initialiseLoop: Button = findViewById(id.send_message)
-
-        var socket: WebSocket?
+        val initialise: Button = findViewById(id.init_handshake)
+        val startListening: Button = findViewById(id.start_listening)
+        val stopListening: Button = findViewById(id.stop_listening)
 
         connectButton.setOnClickListener {
-            socket = NetworkKit().connectToServer(ipAddress.text.toString())
+            networkKit = NetworkKit(ipAddress.text.toString())
+            networkKit.connectToServer()
         }
 
-        initialiseLoop.setOnClickListener {
-            socket = NetworkKit().connectToServer(ipAddress.text.toString())
-            NetworkKit().sendMessage(socket!!)
+        initialise.setOnClickListener {
+            networkKit.initialiseClientSlaveSyncHandshake()
+        }
+
+        startListening.setOnClickListener {
+            networkKit.startListening()
+        }
+
+        stopListening.setOnClickListener {
+            networkKit.stopListening()
         }
     }
 
